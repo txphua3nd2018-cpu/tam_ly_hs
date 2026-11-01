@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trạm Tâm An-THPT HẮC DỊCH | Hỗ Trợ Tâm Lý Học Đường (12-18 Tuổi)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'Nunito', 'sans-serif'],
+                    },
+                    colors: {
+                        healing: {
+                            50: '#f2f9f6',
+                            100: '#ddepe7',
+                            200: '#bce0d3',
+                            300: '#8fc9b6',
+                            400: '#5ea994',
+                            500: '#3f8d78',
+                            600: '#2f7160',
+                            700: '#275b4e',
+                            800: '#224940',
+                            900: '#1d3c35',
+                        },
+                        warm: {
+                            50: '#fdfaf6',
+                            100: '#f9f1e7',
+                            200: '#f2e0cc',
+                        },
+                        night: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#334155',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+        /* Hiệu ứng vòng tròn thở 4-7-8 */
+        .breathing-circle {
+            transition: transform 4s ease-in-out, background-color 2s ease, box-shadow 2s ease;
+        }
+        /* Hiệu ứng hạt bay lên (Đom đóm / Cái ôm / Tách trà) */
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.8);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0px) scale(1.1);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(-90px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-130px) scale(0.7);
+            }
+        }
+        .floating-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            animation: floatUp 3.2s ease-out forwards;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(143, 201, 182, 0.5);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(63, 141, 120, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-warm-50 text-slate-800 dark:bg-night-900 dark:text-slate-100 min-h-screen flex flex-col selection:bg-healing-200 selection:text-healing-900">
+
+    <!-- Container chứa hiệu ứng hạt phi ngôn từ -->
+    <div id="particle-container"></div>
+
+    <!-- BANNER CAM KẾT MINH BẠCH (TOP BAR) -->
+    <div class="bg-healing-700 dark:bg-slate-950 text-white text-xs sm:text-sm py-2 px-4 border-b border-healing-600 dark:border-slate-800">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1 bg-healing-500/30 border border-healing-300/40 px-2.5 py-0.5 rounded-full text-emerald-100 font-semibold">
+                    <i class="ph-fill ph-shield-check text-emerald-300"></i>
+                    Ẩn Danh Học Đường & Tự Hủy 100%
+                </span>
+                <span class="hidden md:inline text-emerald-100/90">
+                    Không thông báo cho Giáo viên bộ môn hay Phụ huynh • Áp dụng chuẩn Tâm lý học lứa tuổi (12-18 tuổi)
+                </span>
+            </div>
+            <div class="flex items-center gap-3 ml-auto">
+                <button onclick="openCommitmentModal()" class="underline hover:text-emerald-200 flex items-center gap-1">
+                    <i class="ph ph-info"></i> Cơ chế bảo mật
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HEADER & THANH ĐIỀU HƯỚNG 4 PHÂN HỆ -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-white/85 dark:bg-night-800/90 border-b border-slate-200/80 dark:border-slate-700/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-healing-400 to-healing-600 flex items-center justify-center text-white shadow-md shadow-healing-500/20">
+                    <i class="ph-fill ph-plant text-2xl"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-lg sm:text-xl tracking-tight text-slate-800 dark:text-white">Trạm Tâm An</h1>
+                        <span id="age-badge-header" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200">
+                            THPT (15-18T)
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Không gian lắng nghe không phán xét</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="flex items-center gap-1 sm:gap-2 overflow-x-auto max-w-full py-1 no-scrollbar order-3 lg:order-2 w-full lg:w-auto justify-start lg:justify-center">
+                <button onclick="switchTab('tab-mood')" id="btn-tab-mood" class="nav-btn active-nav flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap bg-healing-600 text-white shadow-sm">
+                    <i class="ph-fill ph-heart-half text-base"></i>
+                    <span>1. Chạm Cảm Xúc</span>
+                </button>
+                <button onclick="switchTab('tab-listen')" id="btn-tab-listen" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/60">
+                    <i class="ph-fill ph-chats-circle text-base"></i>
+                    <span>2. Trạm Lắng Nghe</span>
+                    <span class="bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-200 text-[10px] px-1.5 py-0.5 rounded-md font-bold">Zero-Advice</span>
+                </button>
+                <button onclick="switchTab('tab-cbt')" id="btn-tab-cbt" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/60">
+                    <i class="ph-fill ph-compass text-base"></i>
+                    <span>3. Góc Thấu Hiểu</span>
+                </button>
+                <button onclick="switchTab('tab-safety')" id="btn-tab-safety" class="nav-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700/60">
+                    <i class="ph-fill ph-shield-star text-base"></i>
+                    <span>4. Lá Chắn An Toàn</span>
+                </button>
+            </nav>
+
+            <!-- Công cụ góc phải: Chế độ Trực Đêm & SOS -->
+            <div class="flex items-center gap-2 order-2 lg:order-3">
+                <button onclick="toggleNightOwlMode()" id="night-owl-btn" class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600 text-slate-700 dark:text-amber-300 transition-all" title="Chế độ Trực Đêm (Sau 22h)">
+                    <i id="night-owl-icon" class="ph-fill ph-moon-stars text-base text-indigo-600 dark:text-amber-300"></i>
+                    <span id="night-owl-text" class="hidden sm:inline">Ban ngày</span>
+                </button>
+
+                <button onclick="openSOSModal()" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-500 hover:bg-rose-600 text-white shadow-md shadow-rose-500/20 animate-pulse hover:animate-none transition-all">
+                    <i class="ph-fill ph-lifebuoy text-base"></i>
+                    <span>SOS Cấp Cứu</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Thanh thông báo khi bật Chế độ Trực Đêm (Night Owl Mode - Sau 22h) -->
+        <div id="night-owl-banner" class="hidden bg-indigo-950 text-indigo-100 px-4 py-2 text-xs border-t border-indigo-800/70">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+                <div class="flex items-center gap-2">
+                    <i class="ph-fill ph-moon-stars text-amber-300 text-base"></i>
+                    <span><strong>Chế độ Cú Đêm (Sau 22:00):</strong> Để tránh cảm giác bị bỏ rơi khi không có tình nguyện viên trực đêm, hệ thống đã chuyển sang <em>AI Đồng Hành An Toàn</em> & <em>Âm thanh trắng chữa lành</em>.</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleWhiteNoise()" id="white-noise-btn" class="px-2.5 py-1 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-amber-200 font-semibold flex items-center gap-1 transition">
+                        <i class="ph-fill ph-waves"></i> <span id="white-noise-label">Bật tiếng mưa rơi</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+
+        <!-- ==========================================
+             PHÂN HỆ 1: CHẠM CẢM XÚC (CHECK-IN & HẠ NHIỆT)
+             ========================================== -->
+        <section id="tab-mood" class="tab-content space-y-6">
+            <!-- Hero & Chọn lứa tuổi -->
+            <div class="bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/70 dark:border-slate-700/70">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                    <div class="space-y-2 max-w-2xl">
+                        <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-healing-600 dark:text-healing-300 bg-healing-50 dark:bg-healing-900/40 px-3 py-1 rounded-full">
+                            <i class="ph-fill ph-sparkle"></i> Lý thuyết Phát triển Não bộ & Erik Erikson
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-800 dark:text-white">
+                            Hôm nay thế giới bên trong bạn thế nào?
+                        </h2>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Ở tuổi tụi mình, hệ viền (cảm xúc) hoạt động mạnh hơn vỏ não trước trán (lý trí). Vì vậy, quy tắc vàng của Trạm Tâm An là <strong>"Gọi tên cảm xúc & Hạ nhiệt cơ thể trước — Tìm giải pháp sau"</strong>.
+                        </p>
+                    </div>
+
+                    <!-- Bộ chọn lứa tuổi tâm lý -->
+                    <div class="bg-warm-100/70 dark:bg-slate-700/50 p-3.5 rounded-2xl border border-amber-200/60 dark:border-slate-600 min-w-[280px]">
+                        <label class="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-2">
+                            Chọn nhóm tuổi của bạn để cá nhân hóa:
+                        </label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="selectAgeGroup('THCS')" id="age-btn-thcs" class="p-2.5 rounded-xl text-left border transition-all bg-white/60 dark:bg-slate-800 border-slate-200 dark:border-slate-600">
+                                <div class="font-bold text-sm text-slate-800 dark:text-white flex items-center justify-between">
+                                    <span>THCS</span>
+                                    <span class="text-[11px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-700">12-15 tuổi</span>
+                                </div>
+                                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Tuổi dậy thì, kết nối nhóm bạn, biến đổi tâm sinh lý</p>
+                            </button>
+                            <button onclick="selectAgeGroup('THPT')" id="age-btn-thpt" class="p-2.5 rounded-xl text-left border-2 transition-all bg-healing-50 dark:bg-healing-900/40 border-healing-500">
+                                <div class="font-bold text-sm text-healing-900 dark:text-emerald-200 flex items-center justify-between">
+                                    <span>THPT</span>
+                                    <span class="text-[11px] px-1.5 py-0.5 rounded bg-healing-200 dark:bg-healing-800 text-healing-900 dark:text-white">15-18 tuổi</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-300 mt-1">Định hình bản sắc, áp lực điểm số & chọn ngành</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bước 1 & Bước 2: Bánh xe cảm xúc + Thang đo căng thẳng -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Cột trái: Bánh xe cảm xúc (7 cols) -->
+                <div class="lg:col-span-7 bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/70 dark:border-slate-700/70 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-healing-100 dark:bg-healing-900 text-healing-700 dark:text-healing-300 flex items-center justify-center text-sm font-extrabold">1</span>
+                            Bánh Xe Gọi Tên Cảm Xúc ("Name it to tame it")
+                        </h3>
+                        <span class="text-xs text-slate-500 dark:text-slate-400">Chạm vào thẻ giống bạn nhất</span>
+                    </div>
+
+                    <div id="mood-wheel-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Render động bằng JS theo nhóm tuổi -->
+                    </div>
+
+                    <!-- Phản hồi tâm lý tức thì khi chọn cảm xúc -->
+                    <div id="mood-validation-box" class="p-4 rounded-2xl bg-healing-50/80 dark:bg-slate-700/50 border border-healing-200 dark:border-slate-600 flex items-start gap-3">
+                        <i class="ph-fill ph-Quotes text-2xl text-healing-600 dark:text-healing-300 shrink-0 mt-0.5"></i>
+                        <div class="text-sm space-y-1">
+                            <div id="mood-selected-title" class="font-bold text-healing-900 dark:text-emerald-200">
+                                Đang chọn: Kiệt sức vì điểm số & kỳ vọng
+                            </div>
+                            <p id="mood-selected-desc" class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+                                Giá trị của bạn không nằm trên tờ giấy điểm số. Cảm giác mệt nhoài khi phải gồng mình đáp ứng kỳ vọng của người lớn là hoàn toàn thật và đáng được lắng nghe.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột phải: Thang đo mức độ căng thẳng & Kích hoạt Hạ nhiệt (5 cols) -->
+                <div class="lg:col-span-5 bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/70 dark:border-slate-700/70 flex flex-col justify-between space-y-5">
+                    <div class="space-y-4">
+                        <h3 class="font-bold text-lg flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 flex items-center justify-center text-sm font-extrabold">2</span>
+                            Nhiệt Kế Căng Thẳng Hiện Tại
+                        </h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Kéo thanh trượt từ 1 (Bình yên) đến 10 (Quá tải/Bùng nổ). Nếu mức <strong>≥ 7</strong>, hệ thống sẽ tự động bật chế độ <em>Hạ Nhiệt Não Bộ</em> trước khi trò chuyện.
+                        </p>
+
+                        <!-- Hiển thị số điểm lớn -->
+                        <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-700 text-center space-y-2">
+                            <div class="flex items-center justify-center gap-2">
+                                <span id="stress-level-num" class="text-4xl font-extrabold text-amber-500">5</span>
+                                <span class="text-sm text-slate-400 font-semibold">/ 10</span>
+                            </div>
+                            <div id="stress-level-label" class="text-sm font-bold text-amber-600 dark:text-amber-400">
+                                Khá nặng nề, tâm trí đang nhiều suy nghĩ rối bời
+                            </div>
+                            <input type="range" id="stress-slider" min="1" max="10" value="5" oninput="updateStressLevel(this.value)" class="w-full accent-healing-600 cursor-pointer h-2 bg-slate-200 rounded-lg">
+                            <div class="flex justify-between text-[11px] text-slate-400 font-medium px-1">
+                                <span>1 - Nhẹ nhàng</span>
+                                <span>5 - Rối bời</span>
+                                <span>7 - Căng cứng</span>
+                                <span>10 - Quá tải</span>
+                            </div>
+                        </div>
+
+                        <!-- Cảnh báo kích hoạt Quy tắc Hạ Nhiệt khi >= 7 -->
+                        <div id="neuro-alert-box" class="hidden p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800 space-y-2">
+                            <div class="flex items-center gap-2 text-rose-700 dark:text-rose-300 font-bold text-sm">
+                                <i class="ph-fill ph-brain text-lg"></i>
+                                <span>Kích hoạt Quy tắc "Hạ Nhiệt Trước - Giải Quyết Sau"</span>
+                            </div>
+                            <p class="text-xs text-rose-600/90 dark:text-rose-200/90 leading-relaxed">
+                                Ở mức căng thẳng ≥ 7, hạch hạnh nhân (Amygdala) đang báo động mạnh. Mọi sự phân tích đúng-sai lúc này đều gây mệt mỏi thêm. Hãy dành 60 giây thở hoặc chạm giác quan bên dưới nhé!
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Nút điều hướng dựa trên nhu cầu Tự quyết (Self-Determination Theory) -->
+                    <div class="space-y-2.5 pt-2 border-t border-slate-100 dark:border-slate-700">
+                        <div class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">
+                            Quyền tự quyết của bạn lúc này:
+                        </div>
+                        <button onclick="scrollToGrounding()" class="w-full py-2.5 px-4 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/50 dark:hover:bg-amber-900 text-amber-900 dark:text-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
+                            <i class="ph-fill ph-wind text-base"></i>
+                            <span>Hạ nhiệt cơ thể 1 phút (Thở 4-7-8 / 5 Giác quan)</span>
+                        </button>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button onclick="switchTab('tab-listen')" class="py-2.5 px-3 rounded-xl bg-healing-600 hover:bg-healing-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition">
+                                <i class="ph-fill ph-ear"></i>
+                                <span>Chỉ muốn được lắng nghe</span>
+                            </button>
+                            <button onclick="switchTab('tab-cbt')" class="py-2.5 px-3 rounded-xl bg-slate-800 hover:bg-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition">
+                                <i class="ph-fill ph-lightbulb"></i>
+                                <span>Muốn gỡ rối suy nghĩ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bước 3: Trạm Cấp Cứu Cảm Xúc (Grounding Tools: Thở 4-7-8 & 5-4-3-2-1) -->
+            <div id="grounding-section" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Công cụ 1: Nhịp thở 4-7-8 Thời gian thực -->
+                <div class="bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/70 dark:border-slate-700/70 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-healing-600 dark:text-healing-300 bg-healing-50 dark:bg-healing-900/40 px-2.5 py-1 rounded-lg">
+                                Điều hòa thần kinh đối giao cảm
+                            </span>
+                            <span id="breath-cycle-count" class="text-xs font-semibold text-slate-400">Chu kỳ: 0</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Nhịp Thở 4 - 7 - 8 Chữa Lành</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                            Hít vào bằng mũi 4 giây • Giữ hơi 7 giây • Thở ra chậm bằng miệng 8 giây giúp làm chậm nhịp tim tức thì.
+                        </p>
+                    </div>
+
+                    <!-- Vòng tròn Animation -->
+                    <div class="my-8 flex flex-col items-center justify-center relative h-52">
+                        <div id="breathing-outer-ring" class="w-44 h-44 rounded-full border-4 border-dashed border-healing-200 dark:border-slate-700 flex items-center justify-center">
+                            <div id="breathing-circle" class="breathing-circle w-28 h-28 rounded-full bg-gradient-to-tr from-healing-400 to-emerald-300 dark:from-healing-600 dark:to-emerald-500 shadow-lg shadow-healing-500/20 flex flex-col items-center justify-center text-white select-none">
+                                <span id="breath-phase-text" class="font-extrabold text-sm tracking-wide">Sẵn sàng</span>
+                                <span id="breath-timer-num" class="text-2xl font-black mt-0.5">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-3">
+                        <button onclick="toggleBreathing()" id="btn-start-breath" class="px-6 py-2.5 rounded-xl bg-healing-600 hover:bg-healing-700 text-white font-bold text-sm flex items-center gap-2 shadow-sm transition">
+                            <i class="ph-fill ph-play"></i>
+                            <span>Bắt đầu nhịp thở</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Công cụ 2: Kỹ thuật 5-4-3-2-1 Neo giữ thực tại -->
+                <div class="bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/70 dark:border-slate-700/70 flex flex-col justify-between">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/40 px-2.5 py-1 rounded-lg">
+                                Kỹ thuật Grounding 5 Giác Quan
+                            </span>
+                            <button onclick="resetSenses()" class="text-xs text-slate-400 hover:text-slate-600 underline">Làm mới</button>
+                        </div>
+                        <h3 class="font-bold text-lg text-slate-800 dark:text-white">Trò Chơi Neo Giữ Thực Tại 5-4-3-2-1</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Khi đầu óc quay cuồng vì lo lắng tương lai hay tiếc nuối quá khứ, hãy đánh dấu từng bước dưới đây để kéo tâm trí về căn phòng hiện tại:
+                        </p>
+                    </div>
+
+                    <div id="senses-list" class="space-y-2.5 my-4">
+                        <!-- Render bằng JS -->
+                    </div>
+
+                    <div id="senses-complete-banner" class="hidden p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 text-xs font-semibold flex items-center justify-between">
+                        <span>🎉 Tuyệt vời! Tâm trí bạn đã vững vàng hơn. Giờ bạn muốn vào Trạm Lắng Nghe chứ?</span>
+                        <button onclick="switchTab('tab-listen')" class="px-3 py-1 rounded-lg bg-emerald-600 text-white font-bold">Vào ngay</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PHÂN HỆ 2: TRẠM LẮNG NGHE - TÂM SỰ CÙNG NGƯỜI LẠ (ZERO-ADVICE)
+             ========================================== -->
+        <section id="tab-listen" class="tab-content hidden space-y-6">
+            <!-- Thanh Chuyển Đổi Góc Nhìn (Demo Dual-View) -->
+            <div class="bg-gradient-to-r from-healing-800 to-slate-900 text-white rounded-3xl p-4 sm:p-5 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300">
+                        <i class="ph-fill ph-sliders-horizontal"></i> CHẾ ĐỘ THẨM ĐỊNH & DEMO HỆ THỐNG PHÒNG VỆ
+                    </div>
+                    <h2 class="text-lg sm:text-xl font-extrabold">Trạm Lắng Nghe Ẩn Danh — Giao Thức "Zero-Advice" (Carl Rogers)</h2>
+                    <p class="text-xs text-slate-300">
+                        Chuyển đổi giữa 2 góc nhìn để kiểm chứng cách phần mềm <strong>chặn lời khuyên độc hại</strong> từ Người Lắng Nghe và <strong>bảo vệ học sinh khỏi thông tin nhạy cảm</strong>.
+                    </p>
+                </div>
+
+                <!-- Switch 2 góc nhìn -->
+                <div class="bg-slate-950/60 p-1.5 rounded-2xl border border-slate-700 flex items-center gap-1 shrink-0 w-full md:w-auto">
+                    <button onclick="setChatRole('student')" id="role-btn-student" class="flex-1 md:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-emerald-500 text-slate-950 shadow">
+                        <i class="ph-fill ph-student mr-1"></i> Góc nhìn: Học Sinh Tâm Sự
+                    </button>
+                    <button onclick="setChatRole('listener')" id="role-btn-listener" class="flex-1 md:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white">
+                        <i class="ph-fill ph-headphones mr-1"></i> Góc nhìn: Người Lắng Nghe (Kiểm duyệt)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Giao diện Phòng Chat & Bảng Công Cụ Kiểm Duyệt -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- CỘT TRÁI: KHUNG CHAT CHÍNH (8 cols) -->
+                <div class="lg:col-span-8 bg-white dark:bg-night-800 rounded-3xl shadow-sm border border-slate-200/80 dark:border-slate-700 overflow-hidden flex flex-col h-[640px]">
+                    
+                    <!-- Header Phòng Chat -->
+                    <div class="p-4 bg-slate-50 dark:bg-slate-800/90 border-b border-slate-200/70 dark:border-slate-700 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-3">
+                            <div class="relative">
+                                <div class="w-10 h-10 rounded-2xl bg-healing-100 dark:bg-healing-900 text-healing-700 dark:text-emerald-300 flex items-center justify-center font-bold text-lg">
+                                    <i class="ph-fill ph-bird"></i>
+                                </div>
+                                <span class="w-3 h-3 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-800 absolute -bottom-0.5 -right-0.5"></span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span id="chat-partner-name" class="font-bold text-sm text-slate-800 dark:text-white">Người Lạ Ấm Áp #409</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                                        Đã đào tạo PFA
+                                    </span>
+                                </div>
+                                <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                                    <span>Chủ đề:</span>
+                                    <select id="chat-topic-select" onchange="changeChatTopic(this.value)" class="bg-transparent font-semibold text-healing-700 dark:text-emerald-300 focus:outline-none cursor-pointer">
+                                        <option value="Áp lực điểm số & Kỳ vọng">Áp lực điểm số & Kỳ vọng</option>
+                                        <option value="Xung đột & Khoảng cách với bố mẹ">Xung đột & Khoảng cách với bố mẹ</option>
+                                        <option value="Cô đơn & Áp lực đồng trang lứa">Cô đơn & Áp lực đồng trang lứa</option>
+                                        <option value="Hoang mang bản sắc & Tương lai">Hoang mang bản sắc & Tương lai</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bộ đếm ngược 30 phút (Tránh lệ thuộc cảm xúc) & Nút Hạ cánh -->
+                        <div class="flex items-center gap-2">
+                            <div class="px-3 py-1.5 rounded-xl bg-amber-50 dark:bg-slate-700 border border-amber-200/70 dark:border-slate-600 text-xs flex items-center gap-1.5" title="Giới hạn 30 phút/phiên để tránh hội chứng lệ thuộc vỗ về ảo">
+                                <i class="ph-fill ph-timer text-amber-600 dark:text-amber-300"></i>
+                                <span id="session-countdown" class="font-mono font-bold text-slate-700 dark:text-slate-200">29:45</span>
+                            </div>
+                            <button onclick="triggerCoolDownExit()" class="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-xs font-bold text-slate-700 dark:text-slate-200 transition flex items-center gap-1">
+                                <i class="ph-fill ph-parachute"></i>
+                                <span>Hạ cánh an toàn</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Thanh nhắc nhở Tự hủy & Quy tắc Không lời khuyên -->
+                    <div class="bg-healing-50/70 dark:bg-slate-900/60 px-4 py-2 text-[11px] text-slate-600 dark:text-slate-400 border-b border-healing-100 dark:border-slate-800 flex items-center justify-between">
+                        <span><i class="ph-fill ph-lock-key text-healing-600 mr-1"></i> Tin nhắn tự động xóa vĩnh viễn sau khi đóng phiên • SĐT & Link cá nhân sẽ bị che mờ tự động.</span>
+                        <span id="current-role-indicator" class="font-bold text-healing-700 dark:text-emerald-300">Đang nhập vai: Học Sinh</span>
+                    </div>
+
+                    <!-- Vùng hiển thị tin nhắn -->
+                    <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gradient-to-b from-warm-50/40 to-white dark:from-night-900/40 dark:to-night-800">
+                        <!-- Tin nhắn khởi tạo bằng JS -->
+                    </div>
+
+                    <!-- Cảnh báo Vi phạm Giao thức Zero-Advice (Ẩn mặc định, hiện khi Người Lắng Nghe gõ câu khuyên nhủ/phán xét) -->
+                    <div id="zero-advice-warning" class="hidden mx-4 mb-2 p-3.5 rounded-2xl bg-rose-50 dark:bg-rose-950/90 border border-rose-300 dark:border-rose-700 text-xs space-y-2 shadow-sm">
+                        <div class="flex items-start justify-between gap-2">
+                            <div class="flex items-center gap-1.5 font-bold text-rose-700 dark:text-rose-300">
+                                <i class="ph-fill ph-hand-palm text-base"></i>
+                                <span>CHẶN TIN NHẮN — Vi phạm giao thức "Zero-Advice" (Không khuyên nhủ/phán xét)</span>
+                            </div>
+                            <button onclick="closeZeroAdviceWarning()" class="text-rose-400 hover:text-rose-600"><i class="ph ph-x"></i></button>
+                        </div>
+                        <p id="zero-advice-reason" class="text-rose-600 dark:text-rose-200 leading-relaxed">
+                            Cụm từ bạn vừa nhập mang tính áp đặt giải pháp hoặc hạ thấp cảm xúc của học sinh. Khi đang tổn thương, học sinh cần được công nhận cảm xúc trước tiên.
+                        </p>
+                        <div class="bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-rose-200 dark:border-slate-700">
+                            <div class="font-bold text-healing-700 dark:text-emerald-300 mb-1">💡 Gợi ý diễn đạt lại tự nhiên (Chuẩn Carl Rogers):</div>
+                            <div id="zero-advice-suggestion" class="text-slate-700 dark:text-slate-300 italic">
+                                "Nghe bạn kể mình cảm nhận được bạn đã phải chịu đựng áp lực này suốt một thời gian dài. Cứ xả hết ra nhé, mình vẫn đang nghe đây."
+                            </div>
+                            <button onclick="applySuggestedEmpathy()" class="mt-2 px-3 py-1 rounded-lg bg-healing-600 text-white font-bold text-[11px] hover:bg-healing-700">
+                                Dùng gợi ý này & chỉnh sửa thêm
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Thanh tương tác phi ngôn từ (Non-verbal Empathy Bar) -->
+                    <div class="px-4 py-2 bg-slate-50/90 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-700/70 flex flex-wrap items-center justify-between gap-2">
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-[11px] text-slate-400 font-semibold mr-1">Chạm phi ngôn từ:</span>
+                            <button onclick="sendNonVerbal('hug')" class="px-2.5 py-1 rounded-full bg-rose-50 hover:bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 text-xs font-semibold flex items-center gap-1 border border-rose-200/60 dark:border-rose-800/60 transition">
+                                <span>🫂</span> <span>Gửi Cái Ôm</span>
+                            </button>
+                            <button onclick="sendNonVerbal('firefly')" class="px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 text-xs font-semibold flex items-center gap-1 border border-amber-200/60 dark:border-amber-800/60 transition">
+                                <span>✨</span> <span>Đom Đóm Hy Vọng</span>
+                            </button>
+                            <button onclick="sendNonVerbal('tea')" class="px-2.5 py-1 rounded-full bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 text-xs font-semibold flex items-center gap-1 border border-emerald-200/60 dark:border-emerald-800/60 transition">
+                                <span>🍵</span> <span>Tách Trà Ấm</span>
+                            </button>
+                        </div>
+                        <span class="text-[11px] text-slate-400 hidden sm:inline">Dành cho lúc nghẹn lời không biết viết gì</span>
+                    </div>
+
+                    <!-- Ô nhập tin nhắn -->
+                    <form onsubmit="handleChatSubmit(event)" class="p-3 bg-white dark:bg-night-800 border-t border-slate-200 dark:border-slate-700 flex items-center gap-2">
+                        <input type="text" id="chat-input" placeholder="Viết ra bất cứ điều gì đang đè nặng trong lòng bạn..." class="flex-1 bg-slate-100 dark:bg-slate-900 text-slate-800 dark:text-slate-100 text-sm px-4 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-healing-500">
+                        <button type="submit" class="px-5 py-3 rounded-2xl bg-healing-600 hover:bg-healing-700 text-white font-bold text-sm flex items-center gap-1.5 shadow-sm transition shrink-0">
+                            <span>Gửi</span>
+                            <i class="ph-fill ph-paper-plane-right"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- CỘT PHẢI: BẢNG ĐIỀU KHIỂN THỬ NGHIỆM BỘ LỌC & HƯỚNG DẪN NGƯỜI LẮNG NGHE (4 cols) -->
+                <div class="lg:col-span-4 space-y-5">
+                    
+                    <!-- Hộp 1: Nút Test Nhanh Các Kịch Bản Phản Biện -->
+                    <div class="bg-white dark:bg-night-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-sm uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+                                <i class="ph-fill ph-flask text-healing-600"></i>
+                                Thử Nghiệm Chốt Chặn An Toàn
+                            </h3>
+                            <span class="text-[10px] bg-slate-100 dark:bg-slate-700 px-2 py-0.5 rounded font-semibold">1-Click Demo</span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Bấm vào các tình huống dưới đây để xem hệ thống tự động xử lý các rủi ro đã thẩm định:
+                        </p>
+
+                        <div class="space-y-2">
+                            <button onclick="runDemoScenario('toxic_advice')" class="w-full text-left p-3 rounded-2xl bg-rose-50/70 hover:bg-rose-100/80 dark:bg-rose-950/40 dark:hover:bg-rose-900/50 border border-rose-200/70 dark:border-rose-800/60 transition">
+                                <div class="font-bold text-xs text-rose-800 dark:text-rose-300 flex items-center justify-between">
+                                    <span>1. Test Người Nghe khuyên độc hại</span>
+                                    <span class="text-[10px] bg-rose-200 dark:bg-rose-800 px-1.5 py-0.5 rounded">Chặn Zero-Advice</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                                    Thử nhập: <em>"Có gì đâu mà buồn, em nên cố học vì bố mẹ đi!"</em>
+                                </p>
+                            </button>
+
+                            <button onclick="runDemoScenario('pii_leak')" class="w-full text-left p-3 rounded-2xl bg-amber-50/70 hover:bg-amber-100/80 dark:bg-amber-950/40 dark:hover:bg-amber-900/50 border border-amber-200/70 dark:border-amber-800/60 transition">
+                                <div class="font-bold text-xs text-amber-900 dark:text-amber-300 flex items-center justify-between">
+                                    <span>2. Test Lộ SĐT / Mạng xã hội (Grooming)</span>
+                                    <span class="text-[10px] bg-amber-200 dark:bg-amber-800 px-1.5 py-0.5 rounded">PII Blocker</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                                    Thử gửi SĐT <em>0912345678</em> hoặc link Facebook cá nhân trong phòng chat.
+                                </p>
+                            </button>
+
+                            <button onclick="runDemoScenario('crisis_slang')" class="w-full text-left p-3 rounded-2xl bg-purple-50/70 hover:bg-purple-100/80 dark:bg-purple-950/40 dark:hover:bg-purple-900/50 border border-purple-200/70 dark:border-purple-800/60 transition">
+                                <div class="font-bold text-xs text-purple-900 dark:text-purple-300 flex items-center justify-between">
+                                    <span>3. Test Từ khóa Đỏ / Từ lóng Gen Z</span>
+                                    <span class="text-[10px] bg-purple-200 dark:bg-purple-800 px-1.5 py-0.5 rounded">Xác nhận tinh tế</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                                    Thử nhắn: <em>"Áp lực quá, mình chỉ muốn đăng xuất khỏi trái đất..."</em>
+                                </p>
+                            </button>
+
+                            <button onclick="runDemoScenario('corumination')" class="w-full text-left p-3 rounded-2xl bg-sky-50/70 hover:bg-sky-100/80 dark:bg-sky-950/40 dark:hover:bg-sky-900/50 border border-sky-200/70 dark:border-sky-800/60 transition">
+                                <div class="font-bold text-xs text-sky-900 dark:text-sky-300 flex items-center justify-between">
+                                    <span>4. Test Bẫy "Đồng lõa cảm xúc"</span>
+                                    <span class="text-[10px] bg-sky-200 dark:bg-sky-800 px-1.5 py-0.5 rounded">Chuẩn Carl Rogers</span>
+                                </div>
+                                <p class="text-[11px] text-slate-600 dark:text-slate-400 mt-1">
+                                    Học sinh đòi trả đũa/cô lập bạn cùng lớp → Công nhận nỗi ấm ức nhưng không cổ xúy bạo lực.
+                                </p>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Hộp 2: Gợi ý Phản hồi Thấu cảm (Không văn mẫu) & Bảo vệ Người Nghe -->
+                    <div class="bg-white dark:bg-night-800 rounded-3xl p-5 shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-sm text-slate-800 dark:text-white flex items-center gap-1.5">
+                                <i class="ph-fill ph-sparkle text-amber-500"></i>
+                                Gợi Ý Ý Tưởng Thấu Cảm (Empathy Hints)
+                            </h3>
+                            <span class="text-[10px] text-healing-600 dark:text-emerald-300 font-bold">Chống văn mẫu</span>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Dành cho Người Lắng Nghe: Chạm để đưa khung gợi ý vào ô nhập và sửa lại theo giọng văn tự nhiên của bạn:
+                        </p>
+
+                        <div class="space-y-2 text-xs">
+                            <button onclick="insertHint('Nghe bạn kể mà mình cũng thấy nặng lòng theo. Giữ chuyện này một mình suốt mấy tuần qua chắc hẳn bạn đã mệt nhoài rồi...')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-healing-50 dark:bg-slate-900 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-700 transition">
+                                <span class="font-bold text-healing-700 dark:text-emerald-300 block mb-0.5">• Ghi nhận sự mệt mỏi (Validation):</span>
+                                <span class="text-slate-600 dark:text-slate-300">"Giữ chuyện này một mình suốt thời gian qua chắc hẳn bạn đã mệt nhoài rồi..."</span>
+                            </button>
+                            <button onclick="insertHint('Việc bạn dám nói ra cảm giác thật lúc này đã là một sự dũng cảm rất lớn rồi. Bạn không cần phải ép mình mạnh mẽ ngay lúc này đâu.')" class="w-full text-left p-2.5 rounded-xl bg-slate-50 hover:bg-healing-50 dark:bg-slate-900 dark:hover:bg-slate-700 border border-slate-200/60 dark:border-slate-700 transition">
+                                <span class="font-bold text-healing-700 dark:text-emerald-300 block mb-0.5">• Cổ vũ nội lực (Empowerment):</span>
+                                <span class="text-slate-600 dark:text-slate-300">"Bạn không cần phải ép mình mạnh mẽ ngay lúc này đâu..."</span>
+                            </button>
+                        </div>
+
+                        <!-- Bảo vệ Người Lắng Nghe khỏi Chấn thương thứ cấp (Vicarious Trauma) -->
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-700 flex items-center justify-between text-xs">
+                            <div>
+                                <span class="font-bold text-slate-700 dark:text-slate-300 block">Quota Tình nguyện viên: 1/2 phiên</span>
+                                <span class="text-[11px] text-slate-400">Tránh quá tải cảm xúc thứ cấp</span>
+                            </div>
+                            <button onclick="triggerSafeHandover()" class="px-3 py-1.5 rounded-xl bg-amber-100 hover:bg-amber-200 dark:bg-amber-900/50 text-amber-900 dark:text-amber-200 font-bold text-xs transition">
+                                Chuyển giao an toàn
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PHÂN HỆ 3: GÓC THẤU HIỂU (CBT & TÌNH HUỐNG ĐỒNG TRANG LỨA)
+             ========================================== -->
+        <section id="tab-cbt" class="tab-content hidden space-y-6">
+            <!-- Banner giới thiệu nguyên tắc Tự Quyết -->
+            <div class="bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div class="space-y-1 max-w-2xl">
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950 px-3 py-1 rounded-full">
+                        <i class="ph-fill ph-compass"></i> Dành cho lúc bạn đã bình tĩnh & chủ động muốn tìm hướng gỡ rối
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white">
+                        Góc Thấu Hiểu — Tự Bóc Tách Bẫy Suy Nghĩ & Nhìn Đa Chiều
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+                        Theo lý thuyết Nhận thức - Hành vi (CBT) và Khủng hoảng bản sắc (Erikson), thay vì nghe lời khuyên áp đặt từ người lớn, bạn sẽ tự khám phá góc nhìn mới qua 2 công cụ tương tác dưới đây.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- CÔNG CỤ 1: HỘP CÔNG CỤ CBT BÓC TÁCH BẪY SUY NGHĨ (6 cols) -->
+                <div class="lg:col-span-6 bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                                <i class="ph-fill ph-magnifying-glass-plus text-healing-600 text-xl"></i>
+                                Máy Quét "Bẫy Suy Nghĩ" (CBT Mini-Tool)
+                            </h3>
+                            <span class="text-xs bg-healing-50 dark:bg-healing-900/50 text-healing-700 dark:text-emerald-300 px-2.5 py-1 rounded-lg font-bold">Tái cấu trúc nhận thức</span>
+                        </div>
+
+                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                            Chọn một suy nghĩ tiêu cực quen thuộc hoặc tự nhập suy nghĩ của bạn để bóc tách "chiếc bẫy" mà não bộ đang tự hù dọa mình:
+                        </p>
+
+                        <!-- Chọn nhanh mẫu suy nghĩ -->
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-slate-600 dark:text-slate-300">Suy nghĩ tự động đang làm bạn buồn:</label>
+                            <select id="cbt-preset-select" onchange="selectCBTPreset(this.value)" class="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-healing-500">
+                                <option value="0">"Điểm thi giữa kỳ thấp thế này là mình vô dụng, hỏng cả tương lai rồi!"</option>
+                                <option value="1">"Nhóm bạn đi ăn không rủ mình, chắc chắn cả lớp đều ghét và coi thường mình."</option>
+                                <option value="2">"Bố mẹ suốt ngày khen con nhà người ta, mình chẳng có giá trị gì trong nhà này cả."</option>
+                                <option value="3">"Mình không biết đam mê của mình là gì trong khi bạn bè đã có mục tiêu hết, mình thật kém cỏi."</option>
+                            </select>
+                        </div>
+
+                        <!-- Hoặc tự nhập -->
+                        <div>
+                            <textarea id="cbt-custom-input" rows="2" class="w-full p-3 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-healing-500" placeholder="Hoặc sửa lại theo đúng câu nói đang vang lên trong đầu bạn...">"Điểm thi giữa kỳ thấp thế này là mình vô dụng, hỏng cả tương lai rồi!"</textarea>
+                        </div>
+
+                        <!-- Kết quả phân tích Bẫy suy nghĩ -->
+                        <div id="cbt-analysis-card" class="p-4 rounded-2xl bg-amber-50/70 dark:bg-slate-900/80 border border-amber-200 dark:border-slate-700 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-bold text-amber-800 dark:text-amber-300 uppercase flex items-center gap-1">
+                                    <i class="ph-fill ph-warning-octagon"></i> Bẫy nhận thức phát hiện:
+                                </span>
+                                <span id="cbt-trap-name" class="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-amber-200/80 dark:bg-amber-900 text-amber-900 dark:text-amber-200">
+                                    Tư duy Trắng - Đen & Bi kịch hóa (Catastrophizing)
+                                </span>
+                            </div>
+                            <p id="cbt-trap-explain" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                                Não bộ đang đánh đồng <strong>1 bài kiểm tra chưa tốt</strong> với <strong>toàn bộ con người và tương lai của bạn</strong>. Thực tế, một điểm số chỉ phản ánh mức độ ôn tập của tuần vừa rồi, không định nghĩa phẩm chất của bạn.
+                            </p>
+                            <div class="p-3 rounded-xl bg-white dark:bg-night-800 border border-emerald-200 dark:border-emerald-800/70 space-y-1">
+                                <div class="text-xs font-bold text-healing-700 dark:text-emerald-300 flex items-center gap-1">
+                                    <i class="ph-fill ph-plant"></i> Suy nghĩ bao dung & thực tế hơn (Reframing):
+                                </div>
+                                <p id="cbt-reframe-text" class="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 italic">
+                                    "Mình buồn vì kết quả lần này chưa như ý, nhưng đây chỉ là 1 cột điểm. Mình vẫn có những môn khác và thời gian để điều chỉnh cách học từ từ."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="analyzeCustomCBT()" class="w-full py-3 rounded-2xl bg-healing-600 hover:bg-healing-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition">
+                        <i class="ph-fill ph-magic-wand"></i>
+                        <span>Soi chiếu & Chuyển hóa suy nghĩ này</span>
+                    </button>
+                </div>
+
+                <!-- CÔNG CỤ 2: THƯ VIỆN TÌNH HUỐNG ĐỒNG TRANG LỨA (INTERACTIVE VISUAL NOVEL) (6 cols) -->
+                <div class="lg:col-span-6 bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 flex flex-col justify-between space-y-4">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                                <i class="ph-fill ph-book-open-text text-indigo-600 text-xl"></i>
+                                Tình Huống Đồng Trang Lứa (Visual Novel)
+                            </h3>
+                            <div class="flex gap-1">
+                                <button onclick="loadStory(0)" id="story-tab-0" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white">Tình huống 1</button>
+                                <button onclick="loadStory(1)" id="story-tab-1" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Tình huống 2</button>
+                                <button onclick="loadStory(2)" id="story-tab-2" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300">Tình huống 3</button>
+                            </div>
+                        </div>
+
+                        <!-- Khung truyện tương tác -->
+                        <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-50/80 to-warm-50 dark:from-slate-900 dark:to-slate-800 border border-indigo-100 dark:border-slate-700 space-y-3">
+                            <div class="flex items-center gap-2">
+                                <span id="story-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200">
+                                    Áp lực đồng trang lứa (12-16 tuổi)
+                                </span>
+                                <h4 id="story-title" class="font-bold text-sm text-slate-800 dark:text-white">
+                                    Bị nhóm bạn thân "bơ đẹp" trên lớp
+                                </h4>
+                            </div>
+
+                            <p id="story-context" class="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed bg-white/80 dark:bg-slate-900/60 p-3.5 rounded-xl border border-slate-200/50 dark:border-slate-700">
+                                Sáng thứ Hai vào lớp, bạn thấy 3 người bạn thân trong nhóm đang xúm lại xem điện thoại và cười nói rôm rả. Khi bạn vừa bước tới hỏi "Có chuyện gì vui thế?", cả nhóm bỗng im bặt và tản ra. Cảm giác hẫng hụt dâng lên nghẹn ở cổ. Bạn sẽ chọn phản ứng nào?
+                            </p>
+
+                            <!-- Các lựa chọn hành xử -->
+                            <div id="story-choices" class="space-y-2">
+                                <!-- Render bằng JS -->
+                            </div>
+                        </div>
+
+                        <!-- Góc nhìn tâm lý học sau khi chọn -->
+                        <div id="story-feedback" class="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/70 space-y-1.5">
+                            <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                                <i class="ph-fill ph-lightbulb-filament text-base"></i>
+                                <span id="story-feedback-title">Góc nhìn Tâm lý học lứa tuổi:</span>
+                            </div>
+                            <p id="story-feedback-text" class="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                                Hãy bấm vào một trong 3 cách xử lý bên trên để xem phân tích ưu/nhược điểm tâm lý mà không có phán xét đúng sai.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             PHÂN HỆ 4: LÁ CHẮN AN TOÀN (PHÂN TẦNG XANH - VÀNG - ĐỎ & CƠ CHẾ PHÒNG VỆ)
+             ========================================== -->
+        <section id="tab-safety" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-2">
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold text-healing-700 dark:text-emerald-300 bg-healing-50 dark:bg-healing-950 px-3 py-1 rounded-full">
+                    <i class="ph-fill ph-shield-check"></i> Thẩm định Đa tầng & Đạo đức Tâm lý Học đường
+                </div>
+                <h2 class="text-2xl font-extrabold text-slate-800 dark:text-white">
+                    Hệ Thống Phân Tầng Xanh - Vàng - Đỏ & Bảo Vệ Kép
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-3xl">
+                    Giải quyết nghịch lý lớn nhất của tâm lý học đường: <strong>Làm sao vừa bảo mật tuyệt đối để học sinh tin tưởng, vừa kịp thời cứu nguy khi có rủi ro tính mạng mà không làm gia đình mắng mỏ thêm?</strong>
+                </p>
+            </div>
+
+            <!-- 3 Cột Phân Tầng Cảnh Báo Xanh - Vàng - Đỏ -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- MỨC XANH -->
+                <div class="bg-white dark:bg-night-800 rounded-3xl p-6 border-2 border-emerald-400/70 dark:border-emerald-600/60 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-extrabold text-xs">
+                            MỨC XANH • CĂNG THẲNG THÔNG THƯỜNG
+                        </span>
+                        <i class="ph-fill ph-check-circle text-2xl text-emerald-500"></i>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Buồn vì điểm số, giận dỗi bạn bè, áp lực bài vở, mệt mỏi nhất thời.
+                    </p>
+                    <ul class="text-xs space-y-2 text-slate-700 dark:text-slate-300">
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-lock text-emerald-600 mt-0.5"></i> <span><strong>Bảo mật 100%:</strong> Tin nhắn tự hủy hoàn toàn ngay sau khi đóng phiên chat.</span></li>
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-ear text-emerald-600 mt-0.5"></i> <span><strong>Can thiệp:</strong> Thở 4-7-8, Tâm sự cùng Người Lắng Nghe theo giao thức Zero-Advice.</span></li>
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-eye-slash text-emerald-600 mt-0.5"></i> <span><strong>Quyền riêng tư:</strong> Giáo viên chủ nhiệm và phụ huynh hoàn toàn không biết.</span></li>
+                    </ul>
+                </div>
+
+                <!-- MỨC VÀNG -->
+                <div class="bg-white dark:bg-night-800 rounded-3xl p-6 border-2 border-amber-400/80 dark:border-amber-600/70 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-extrabold text-xs">
+                            MỨC VÀNG • DẤU HIỆU LỆ THUỘC / CÔ LẬP
+                        </span>
+                        <i class="ph-fill ph-warning-circle text-2xl text-amber-500"></i>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Mở phòng chat > 3 lần/tuần về cùng 1 bế tắc, mất ngủ kéo dài, có dấu hiệu "nghiện vỗ về ảo" để né tránh thực tại.
+                    </p>
+                    <ul class="text-xs space-y-2 text-slate-700 dark:text-slate-300">
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-stairs text-amber-600 mt-0.5"></i> <span><strong>Giảm phụ thuộc (Scaffolding):</strong> Nhẹ nhàng chuyển hướng học sinh sang Góc Thấu Hiểu (CBT) để rèn nội lực.</span></li>
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-calendar-plus text-amber-600 mt-0.5"></i> <span><strong>Can thiệp:</strong> Gợi ý học sinh tự nguyện đặt lịch hẹn kín với Chuyên viên tâm lý trường.</span></li>
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-shield text-amber-600 mt-0.5"></i> <span><strong>Quyền riêng tư:</strong> Vẫn giữ kín với Giáo viên bộ môn và Phụ huynh.</span></li>
+                    </ul>
+                </div>
+
+                <!-- MỨC ĐỎ -->
+                <div class="bg-white dark:bg-night-800 rounded-3xl p-6 border-2 border-rose-500/80 dark:border-rose-600/80 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-3 py-1 rounded-full bg-rose-100 dark:bg-rose-950 text-rose-800 dark:text-rose-300 font-extrabold text-xs">
+                            MỨC ĐỎ • KHỦNG HOẢNG SINH TỒN
+                        </span>
+                        <i class="ph-fill ph-siren text-2xl text-rose-500"></i>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Ý định tự hại (self-harm), tự sát, hoặc đang là nạn nhân của bạo hành/xâm hại nghiêm trọng.
+                    </p>
+                    <ul class="text-xs space-y-2 text-slate-700 dark:text-slate-300">
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-chat-centered-text text-rose-600 mt-0.5"></i> <span><strong>Xác nhận tinh tế:</strong> Phân biệt từ lóng Gen Z ("đăng xuất") với nguy cơ thật để tránh báo động giả.</span></li>
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-user-focus text-rose-600 mt-0.5"></i> <span><strong>Nguyên tắc tiếp cận đầu tiên:</strong> Chuyên viên tâm lý học đường tiếp nhận trước tiên (không báo thẳng cho phụ huynh nếu gia đình chính là nguồn bạo hành).</span></li>
+                        <li class="flex items-start gap-2"><i class="ph-fill ph-phone-call text-rose-600 mt-0.5"></i> <span><strong>Kết nối khẩn:</strong> Mở đường dây nóng 111 & Chuyên gia trực chiến 24/7.</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Bảng tổng hợp 4 Lớp Phòng Vệ Đã Tích Hợp -->
+            <div class="bg-white dark:bg-night-800 rounded-3xl p-6 shadow-sm border border-slate-200/80 dark:border-slate-700 space-y-4">
+                <h3 class="font-bold text-lg text-slate-800 dark:text-white">
+                    Bảng Kiểm Chứng Các Rủi Ro Thực Tế Đã Được Khóa Chặt
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 space-y-1.5">
+                        <div class="font-bold text-healing-700 dark:text-emerald-300 flex items-center gap-1.5">
+                            <i class="ph-fill ph-prohibit text-base"></i> Không Bảng Tin Công Khai
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Loại bỏ hoàn toàn Newsfeed ẩn danh để ngăn chặn hiệu ứng lây lan cảm xúc tiêu cực (Emotional Contagion) và bắt chước hành vi tự hại ở tuổi dậy thì.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 space-y-1.5">
+                        <div class="font-bold text-healing-700 dark:text-emerald-300 flex items-center gap-1.5">
+                            <i class="ph-fill ph-identification-badge text-base"></i> Định Danh Ngầm & PII Blocker
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Người Lắng Nghe phải được xác thực nội bộ và giới hạn 2 phiên/ngày. Tự động ẩn mọi số điện thoại, link mạng xã hội để chống thao túng tâm lý (Grooming).
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 space-y-1.5">
+                        <div class="font-bold text-healing-700 dark:text-emerald-300 flex items-center gap-1.5">
+                            <i class="ph-fill ph-moon-stars text-base"></i> Điểm Mù Ban Đêm (Sau 22h)
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Sau 22h đêm tự động chuyển sang Chế độ Cú Đêm (AI Đồng hành được kiểm soát kịch bản + Âm thanh trắng), không bao giờ để học sinh rơi vào phòng chờ trống rỗng.
+                        </p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-700 space-y-1.5">
+                        <div class="font-bold text-healing-700 dark:text-emerald-300 flex items-center gap-1.5">
+                            <i class="ph-fill ph-calendar-check text-base"></i> Đặt Lịch Hẹn Bảo Mật
+                        </div>
+                        <p class="text-slate-600 dark:text-slate-400 leading-relaxed">
+                            Khi học sinh cần gặp Chuyên gia Tâm lý Học đường trực tiếp, hệ thống tạo mã hẹn ẩn danh không lưu tên trong sổ kỷ luật của lớp.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         CÁC HỘP THOẠI MODAL AN TOÀN (KHÔNG DÙNG ALERT)
+         ========================================== -->
+
+    <!-- 1. MODAL XÁC NHẬN TINH TẾ KHI PHÁT HIỆN TỪ KHÓA ĐỎ / TỪ LÓNG (CRISIS TRIAGE MODAL) -->
+    <div id="crisis-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-night-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-rose-200 dark:border-rose-800 space-y-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-900/60 text-rose-600 dark:text-rose-300 flex items-center justify-center text-2xl shrink-0">
+                    <i class="ph-fill ph-heart-break"></i>
+                </div>
+                <div>
+                    <span class="text-[11px] font-bold uppercase text-rose-600 dark:text-rose-400">Chốt chặn an toàn • Xác nhận tinh tế</span>
+                    <h3 class="text-lg font-extrabold text-slate-800 dark:text-white">Trạm Tâm An đang lắng nghe và rất quan tâm đến bạn</h3>
+                </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Hệ thống vừa nhận thấy tin nhắn của bạn có cụm từ <strong id="detected-crisis-word" class="text-rose-600 dark:text-rose-300">"..."</strong>. Đôi khi tụi mình dùng từ lóng để xả stress sau một ngày quá mệt, nhưng đôi khi đó là lúc nỗi đau đang thực sự quá sức chịu đựng.
+            </p>
+
+            <div class="p-3.5 rounded-2xl bg-amber-50 dark:bg-slate-900 border border-amber-200 dark:border-slate-700 text-xs text-slate-700 dark:text-slate-300">
+                <strong>Hãy cho Trạm Tâm An biết trạng thái thật của bạn lúc này nhé:</strong>
+            </div>
+
+            <div class="space-y-2.5">
+                <button onclick="resolveCrisisModal('slang')" class="w-full p-3.5 rounded-2xl bg-healing-50 hover:bg-healing-100 dark:bg-slate-700 dark:hover:bg-slate-600 border border-healing-300 dark:border-slate-500 text-left transition">
+                    <div class="font-bold text-sm text-healing-900 dark:text-emerald-200">
+                        🌱 Mình vẫn an toàn, mình chỉ đang dùng từ lóng/nói quá để xả cơn bực thôi
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-300 mt-0.5">
+                        Tiếp tục cuộc trò chuyện ẩn danh bình thường (Không bật báo động giả).
+                    </p>
+                </button>
+
+                <button onclick="resolveCrisisModal('danger')" class="w-full p-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white text-left shadow-md transition">
+                    <div class="font-bold text-sm flex items-center gap-2">
+                        <i class="ph-fill ph-lifebuoy text-lg"></i>
+                        <span>🆘 Mình đang thực sự bế tắc và có ý nghĩ làm đau bản thân</span>
+                    </div>
+                    <p class="text-xs text-rose-100 mt-0.5">
+                        Kết nối ngay với Chuyên gia Tâm lý Học đường trực chiến & Đường dây nóng bảo vệ trẻ em 111 (Hoàn toàn miễn phí 24/7).
+                    </p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL SOS CẤP CỨU CẢM XÚC & LIÊN HỆ KHẨN CẤP -->
+    <div id="sos-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-night-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 text-rose-600 dark:text-rose-400 font-extrabold text-lg">
+                    <i class="ph-fill ph-lifebuoy text-2xl"></i>
+                    <span>Trạm Cứu Trợ Khẩn Cấp 24/7</span>
+                </div>
+                <button onclick="closeSOSModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-slate-500"><i class="ph ph-x"></i></button>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Nếu bạn đang hoảng loạn, bị bạo hành hoặc cảm thấy không an toàn ngay lúc này, bạn không hề đơn độc. Hãy chọn kênh hỗ trợ tức thì:
+            </p>
+
+            <div class="space-y-3 text-xs sm:text-sm">
+                <a href="tel:111" class="block p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/60 border border-rose-200 dark:border-rose-800 hover:bg-rose-100 transition">
+                    <div class="font-extrabold text-rose-700 dark:text-rose-300 flex items-center justify-between">
+                        <span>📞 Tổng đài Quốc gia Bảo vệ Trẻ em: 111</span>
+                        <span class="text-[11px] bg-rose-600 text-white px-2 py-0.5 rounded-full">Miễn phí 24/7</span>
+                    </div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Hỗ trợ tâm lý khẩn cấp, can thiệp bạo lực học đường và xâm hại.</p>
+                </a>
+
+                <div class="p-4 rounded-2xl bg-healing-50 dark:bg-slate-900 border border-healing-200 dark:border-slate-700 space-y-2">
+                    <div class="font-bold text-healing-800 dark:text-emerald-300">🏫 Phòng Tâm Lý Học Đường (Bảo mật danh tính)</div>
+                    <p class="text-xs text-slate-600 dark:text-slate-400">
+                        Chuyên viên tâm lý tiếp nhận trực tiếp, cam kết <strong>không thông báo cho giáo viên bộ môn</strong> và đánh giá an toàn gia đình trước tiên.
+                    </p>
+                    <button onclick="bookSchoolCounselor()" id="btn-book-counselor" class="w-full py-2 rounded-xl bg-healing-600 hover:bg-healing-700 text-white font-bold text-xs transition">
+                        Lấy Mã Hẹn Ẩn Danh Với Chuyên Viên Trường
+                    </button>
+                    <div id="booking-code-result" class="hidden p-2.5 rounded-xl bg-white dark:bg-slate-800 text-center font-mono text-xs font-bold text-emerald-700 dark:text-emerald-300 border border-emerald-300">
+                        Mã hẹn ẩn danh của bạn: #TAM-AN-882 (Phòng B.102 - Giờ ra chơi tiết 3)
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="closeSOSModal(); switchTab('tab-mood'); scrollToGrounding();" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-xs">
+                Quay lại Tập thở 4-7-8 để hạ nhịp tim ngay
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. MODAL HẠ CÁNH AN TOÀN (COOL-DOWN EXIT CARD) -->
+    <div id="cooldown-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-night-800 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-healing-200 dark:border-slate-700 text-center space-y-4">
+            <div class="w-16 h-16 rounded-3xl bg-healing-100 dark:bg-healing-900/60 text-healing-600 dark:text-emerald-300 flex items-center justify-center text-3xl mx-auto">
+                <i class="ph-fill ph-tea-bag"></i>
+            </div>
+            <div class="space-y-1">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-healing-600 dark:text-emerald-300">Quy trình Hạ Cánh An Toàn (Cool-down Exit)</span>
+                <h3 class="text-xl font-extrabold text-slate-800 dark:text-white">Cảm ơn bạn đã dũng cảm trải lòng hôm nay</h3>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400">
+                Toàn bộ nội dung phòng chat vừa rồi đã được <strong>xóa vĩnh viễn</strong> để bảo vệ sự riêng tư của bạn. Trước khi quay lại việc học, hãy nhận một chiếc thẻ chăm sóc bản thân nhé:
+            </p>
+            <div class="p-4 rounded-2xl bg-warm-100 dark:bg-slate-900 border border-amber-200/80 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-amber-100 italic" id="selfcare-card-text">
+                "Hãy đứng dậy uống một ngụm nước ấm, vươn vai thật sâu và nhìn ra khoảng cây xanh ngoài cửa sổ trong 30 giây nhé."
+            </div>
+            <div class="flex gap-2">
+                <button onclick="randomizeSelfCareCard()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200">
+                    Đổi thẻ khác
+                </button>
+                <button onclick="closeCoolDownModal()" class="flex-1 py-2.5 rounded-xl bg-healing-600 hover:bg-healing-700 text-xs font-bold text-white">
+                    Mình đã sẵn sàng
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MODAL CAM KẾT BẢO MẬT HỌC ĐƯỜNG -->
+    <div id="commitment-modal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-night-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-extrabold text-lg text-slate-800 dark:text-white flex items-center gap-2">
+                    <i class="ph-fill ph-shield-check text-healing-600 text-2xl"></i>
+                    Hiến Chương Bảo Mật Học Đường
+                </h3>
+                <button onclick="closeCommitmentModal()" class="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center"><i class="ph ph-x"></i></button>
+            </div>
+            <div class="space-y-3 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                <p><strong>1. Không báo cáo cho Giáo viên chủ nhiệm / Phụ huynh:</strong> Mọi chia sẻ về áp lực học tập, tình cảm, mâu thuẫn gia đình đều được mã hóa và tự hủy sau khi đóng tab.</p>
+                <p><strong>2. Định danh ngầm một chiều (Pseudo-anonymity):</strong> Người Lắng Nghe không bao giờ biết tên thật hay lớp của bạn.</p>
+                <p><strong>3. Ngoại lệ duy nhất vì tính mạng (Mức Đỏ):</strong> Chỉ khi phát hiện nguy cơ tự sát hoặc bị xâm hại nghiêm trọng, Chuyên viên tâm lý học đường mới can thiệp bảo vệ bạn theo đúng quy tắc đạo đức nghề nghiệp.</p>
+            </div>
+            <button onclick="closeCommitmentModal()" class="w-full py-2.5 rounded-xl bg-healing-600 text-white font-bold text-xs">Đã hiểu & Yên tâm sử dụng</button>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC TOÀN HỆ THỐNG
+         ========================================== -->
+    <script>
+        // --- DỮ LIỆU TÂM LÝ HỌC LỨA TUỔI (THCS 12-15 & THPT 15-18) ---
+        const ageGroupData = {
+            THCS: {
+                badge: "THCS (12-15T)",
+                moods: [
+                    {
+                        id: "peer",
+                        icon: "🫂",
+                        title: "Cô lập / Sợ bị bạn bè bỏ rơi",
+                        subtitle: "Nhóm bạn thân bơ đẹp, sợ khác biệt",
+                        validation: "Ở tuổi 12-15, nhu cầu thuộc về một nhóm bạn là cực kỳ quan trọng. Cảm giác hẫng hụt khi bị ra rìa không phải do bạn yếu đuối đâu, bất kỳ ai ở vị trí của bạn cũng sẽ thấy tổn thương như vậy."
+                    },
+                    {
+                        id: "puberty",
+                        icon: "🪞",
+                        title: "Tự ti ngoại hình & Dậy thì",
+                        subtitle: "So sánh bản thân với mạng xã hội",
+                        validation: "Cơ thể và cảm xúc tuổi dậy thì thay đổi từng ngày. Việc bạn thấy bối rối hay chưa hài lòng với bản thân là một phần rất tự nhiên của hành trình lớn lên."
+                    },
+                    {
+                        id: "parents",
+                        icon: "🏠",
+                        title: "Bố mẹ không hiểu mình",
+                        subtitle: "Bị kiểm soát điện thoại, bị mắng vô cớ",
+                        validation: "Khi bạn bắt đầu cần không gian riêng cũng là lúc bố mẹ chưa kịp quen với việc bạn đã lớn. Sự bức bối của bạn hoàn toàn có lý do."
+                    },
+                    {
+                        id: "grades",
+                        icon: "📚",
+                        title: "Sợ điểm kém & Áp lực thi chuyển cấp",
+                        subtitle: "Lo lắng kỳ thi vào lớp 10",
+                        validation: "Áp lực phải làm hài lòng thầy cô và gia đình thật sự rất nặng nề. Hôm nay bạn được phép thở phào và nghỉ ngơi tại đây một chút."
+                    },
+                    {
+                        id: "anger",
+                        icon: "🌋",
+                        title: "Tức giận bộc phát / Khó kiềm chế",
+                        subtitle: "Muốn hét lên hoặc đập vỡ đồ đạc",
+                        validation: "Cơn giận thường là lớp áo giáp che giấu sự bất lực hoặc tủi thân bên trong. Đừng trách bản thân vì đã nổi giận, hãy để cơ thể hạ nhiệt từ từ nhé."
+                    },
+                    {
+                        id: "empty",
+                        icon: "☁️",
+                        title: "Buồn vu vơ không rõ lý do",
+                        subtitle: "Trống rỗng, chẳng thiết tha làm gì",
+                        validation: "Không phải nỗi buồn nào cũng cần một lý do rõ ràng. Đôi khi não bộ chỉ đang báo hiệu rằng bạn đã cạn pin cảm xúc rồi."
+                    }
+                ]
+            },
+            THPT: {
+                badge: "THPT (15-18T)",
+                moods: [
+                    {
+                        id: "burnout",
+                        icon: "🔋",
+                        title: "Kiệt sức vì điểm số & Kỳ vọng",
+                        subtitle: "Áp lực đại học, sợ làm gia đình thất vọng",
+                        validation: "Giá trị của bạn không nằm trên tờ giấy điểm số. Cảm giác mệt nhoài khi phải gồng mình đáp ứng kỳ vọng của người lớn là hoàn toàn thật và đáng được lắng nghe."
+                    },
+                    {
+                        id: "identity",
+                        icon: "🧭",
+                        title: "Hoang mang bản sắc & Tương lai",
+                        subtitle: "Không biết mình thích gì, sợ chọn sai ngành",
+                        validation: "Theo nhà tâm lý học Erik Erikson, 15-18 tuổi là giai đoạn 'Khủng hoảng bản sắc'. Việc bạn chưa biết rõ tương lai mình muốn gì là dấu hiệu bạn đang nghiêm túc tìm kiếm chính mình."
+                    },
+                    {
+                        id: "peer_pressure",
+                        icon: "🏃",
+                        title: "Áp lực đồng trang lứa (Peer Pressure)",
+                        subtitle: "Thấy bạn bè giỏi giang còn mình dậm chân tại chỗ",
+                        validation: "Mỗi người có một múi giờ phát triển riêng. Việc nhìn thấy thành tích hào nhoáng của người khác trên mạng dễ làm tụi mình quên mất những nỗ lực thầm lặng của bản thân."
+                    },
+                    {
+                        id: "family_gap",
+                        icon: "🚪",
+                        title: "Xung đột quan điểm với bố mẹ",
+                        subtitle: "Bố mẹ áp đặt ngành học, so sánh 'con nhà người ta'",
+                        validation: "Bị so sánh với người khác ngay trong chính ngôi nhà của mình là một cảm giác rất cô đơn. Bạn xứng đáng được công nhận vì chính con người bạn."
+                    },
+                    {
+                        id: "relationship",
+                        icon: "💔",
+                        title: "Tổn thương tình bạn / Tình cảm",
+                        subtitle: "Rạn nứt mối quan hệ thân thiết",
+                        validation: "Những rung động và tổn thương ở tuổi 15-18 luôn rất sâu sắc. Hãy cho phép mình được buồn mà không cần ép bản thân phải quên ngay lập tức."
+                    },
+                    {
+                        id: "numb",
+                        icon: "🌫️",
+                        title: "Trống rỗng & Mất động lực",
+                        subtitle: "Thức khuya, chán nản, muốn thu mình lại",
+                        validation: "Sự trống rỗng thường xuất hiện khi bạn đã phải gồng mình mạnh mẽ quá lâu. Ở đây bạn không cần phải cố tỏ ra ổn nữa đâu."
+                    }
+                ]
+            }
+        };
+
+        let currentAgeGroup = 'THPT';
+        let currentChatRole = 'student'; // 'student' | 'listener'
+        let isNightOwl = false;
+        let whiteNoiseAudioCtx = null;
+        let whiteNoiseNode = null;
+        let isWhiteNoisePlaying = false;
+
+        // --- KHỞI TẠO BAN ĐẦU ---
+        window.onload = function() {
+            renderMoodWheel();
+            renderSensesList();
+            initChatMessages();
+            loadStory(0);
+            startSessionCountdown();
+        };
+
+        // --- CHUYỂN ĐỔI TAB ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-healing-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-healing-600', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600', 'dark:text-slate-300');
+            }
+        }
+
+        // --- PHÂN HỆ 1: CHỌN LỨA TUỔI & BÁNH XE CẢM XÚC ---
+        function selectAgeGroup(group) {
+            currentAgeGroup = group;
+            document.getElementById('age-badge-header').textContent = ageGroupData[group].badge;
+
+            const btnTHCS = document.getElementById('age-btn-thcs');
+            const btnTHPT = document.getElementById('age-btn-thpt');
+
+            if (group === 'THCS') {
+                btnTHCS.className = "p-2.5 rounded-xl text-left border-2 transition-all bg-healing-50 dark:bg-healing-900/40 border-healing-500";
+                btnTHPT.className = "p-2.5 rounded-xl text-left border transition-all bg-white/60 dark:bg-slate-800 border-slate-200 dark:border-slate-600";
+            } else {
+                btnTHPT.className = "p-2.5 rounded-xl text-left border-2 transition-all bg-healing-50 dark:bg-healing-900/40 border-healing-500";
+                btnTHCS.className = "p-2.5 rounded-xl text-left border transition-all bg-white/60 dark:bg-slate-800 border-slate-200 dark:border-slate-600";
+            }
+            renderMoodWheel();
+        }
+
+        function renderMoodWheel() {
+            const container = document.getElementById('mood-wheel-grid');
+            const moods = ageGroupData[currentAgeGroup].moods;
+            container.innerHTML = '';
+
+            moods.forEach((m, idx) => {
+                const isSelected = idx === 0;
+                const card = document.createElement('button');
+                card.className = `mood-card text-left p-3.5 rounded-2xl border transition-all flex items-start gap-3 ${
+                    isSelected 
+                    ? 'bg-healing-50 dark:bg-healing-900/40 border-healing-500 border-2 shadow-sm' 
+                    : 'bg-slate-50/70 dark:bg-slate-800/70 border-slate-200/80 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700'
+                }`;
+                card.onclick = () => selectMoodCard(idx);
+                card.innerHTML = `
+                    <span class="text-2xl shrink-0">${m.icon}</span>
+                    <div>
+                        <div class="font-bold text-xs sm:text-sm text-slate-800 dark:text-white">${m.title}</div>
+                        <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">${m.subtitle}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            // Cập nhật hộp công nhận cảm xúc đầu tiên
+            selectMoodCard(0);
+        }
+
+        function selectMoodCard(index) {
+            const moods = ageGroupData[currentAgeGroup].moods;
+            const chosen = moods[index];
+
+            document.querySelectorAll('.mood-card').forEach((card, i) => {
+                if (i === index) {
+                    card.className = 'mood-card text-left p-3.5 rounded-2xl border-2 transition-all flex items-start gap-3 bg-healing-50 dark:bg-healing-900/40 border-healing-500 shadow-sm';
+                } else {
+                    card.className = 'mood-card text-left p-3.5 rounded-2xl border transition-all flex items-start gap-3 bg-slate-50/70 dark:bg-slate-800/70 border-slate-200/80 dark:border-slate-700 hover:bg-white dark:hover:bg-slate-700';
+                }
+            });
+
+            document.getElementById('mood-selected-title').textContent = `Đang chạm vào cảm xúc: ${chosen.title}`;
+            document.getElementById('mood-selected-desc').textContent = chosen.validation;
+        }
+
+        // --- THANG ĐO CĂNG THẲNG & QUY TẮC HẠ NHIỆT NÃO BỘ ---
+        function updateStressLevel(val) {
+            const num = parseInt(val, 10);
+            const numEl = document.getElementById('stress-level-num');
+            const labelEl = document.getElementById('stress-level-label');
+            const alertBox = document.getElementById('neuro-alert-box');
+
+            numEl.textContent = num;
+
+            if (num <= 3) {
+                numEl.className = "text-4xl font-extrabold text-emerald-500";
+                labelEl.className = "text-sm font-bold text-emerald-600 dark:text-emerald-400";
+                labelEl.textContent = "Tâm trí khá ổn định, sẵn sàng lắng nghe hoặc khám phá";
+                alertBox.classList.add('hidden');
+            } else if (num <= 6) {
+                numEl.className = "text-4xl font-extrabold text-amber-500";
+                labelEl.className = "text-sm font-bold text-amber-600 dark:text-amber-400";
+                labelEl.textContent = "Khá nặng nề, tâm trí đang nhiều suy nghĩ rối bời";
+                alertBox.classList.add('hidden');
+            } else {
+                numEl.className = "text-4xl font-extrabold text-rose-500";
+                labelEl.className = "text-sm font-bold text-rose-600 dark:text-rose-400";
+                labelEl.textContent = "Căng thẳng cao! Hệ viền cảm xúc đang quá tải";
+                alertBox.classList.remove('hidden');
+            }
+        }
+
+        function scrollToGrounding() {
+            document.getElementById('grounding-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // --- BÀI TẬP THỞ 4-7-8 THỜI GIAN THỰC ---
+        let breathInterval = null;
+        let breathTimeouts = [];
+        let isBreathing = false;
+        let breathCycles = 0;
+
+        function toggleBreathing() {
+            const btn = document.getElementById('btn-start-breath');
+            if (isBreathing) {
+                stopBreathing();
+                btn.innerHTML = `<i class="ph-fill ph-play"></i><span>Bắt đầu nhịp thở</span>`;
+                btn.className = "px-6 py-2.5 rounded-xl bg-healing-600 hover:bg-healing-700 text-white font-bold text-sm flex items-center gap-2 shadow-sm transition";
+            } else {
+                isBreathing = true;
+                btn.innerHTML = `<i class="ph-fill ph-stop"></i><span>Dừng nhịp thở</span>`;
+                btn.className = "px-6 py-2.5 rounded-xl bg-rose-500 hover:bg-rose-600 text-white font-bold text-sm flex items-center gap-2 shadow-sm transition";
+                runBreathCycle();
+            }
+        }
+
+        function clearBreathTimers() {
+            if (breathInterval) clearInterval(breathInterval);
+            breathTimeouts.forEach(t => clearTimeout(t));
+            breathTimeouts = [];
+        }
+
+        function stopBreathing() {
+            isBreathing = false;
+            clearBreathTimers();
+            const circle = document.getElementById('breathing-circle');
+            circle.style.transition = 'transform 0.6s ease';
+            circle.style.transform = 'scale(1)';
+            document.getElementById('breath-phase-text').textContent = 'Sẵn sàng';
+            document.getElementById('breath-timer-num').textContent = '--';
+        }
+
+        function runBreathCycle() {
+            if (!isBreathing) return;
+            clearBreathTimers();
+
+            const circle = document.getElementById('breathing-circle');
+            const phaseText = document.getElementById('breath-phase-text');
+            const timerNum = document.getElementById('breath-timer-num');
+
+            // Pha 1: Hít vào 4 giây
+            phaseText.textContent = 'Hít vào...';
+            circle.style.transition = 'transform 4s ease-in-out';
+            circle.style.transform = 'scale(1.48)';
+            startPhaseCountdown(4);
+
+            // Pha 2: Giữ hơi 7 giây (bắt đầu ở giây thứ 4)
+            breathTimeouts.push(setTimeout(() => {
+                if (!isBreathing) return;
+                phaseText.textContent = 'Giữ hơi...';
+                circle.style.transition = 'transform 0.5s ease';
+                startPhaseCountdown(7);
+            }, 4000));
+
+            // Pha 3: Thở ra 8 giây (bắt đầu ở giây thứ 11)
+            breathTimeouts.push(setTimeout(() => {
+                if (!isBreathing) return;
+                phaseText.textContent = 'Thở ra chậm...';
+                circle.style.transition = 'transform 8s ease-in-out';
+                circle.style.transform = 'scale(0.95)';
+                startPhaseCountdown(8);
+            }, 11000));
+
+            // Lặp lại sau 19 giây
+            breathTimeouts.push(setTimeout(() => {
+                if (!isBreathing) return;
+                breathCycles++;
+                document.getElementById('breath-cycle-count').textContent = `Chu kỳ: ${breathCycles}`;
+                runBreathCycle();
+            }, 19000));
+        }
+
+        function startPhaseCountdown(seconds) {
+            if (breathInterval) clearInterval(breathInterval);
+            let remaining = seconds;
+            const timerNum = document.getElementById('breath-timer-num');
+            timerNum.textContent = remaining + 's';
+            breathInterval = setInterval(() => {
+                remaining--;
+                if (remaining > 0) {
+                    timerNum.textContent = remaining + 's';
+                } else {
+                    clearInterval(breathInterval);
+                }
+            }, 1000);
+        }
+
+        // --- KỸ THUẬT GROUNDING 5-4-3-2-1 ---
+        const sensesData = [
+            { count: 5, label: "Nhìn thấy 5 đồ vật quanh bạn (VD: chiếc bút, ánh nắng, góc bàn...)", done: false },
+            { count: 4, label: "Chạm vào 4 bề mặt khác nhau (VD: mặt bàn mát lạnh, vạt áo mềm...)", done: false },
+            { count: 3, label: "Lắng nghe 3 âm thanh ngoài kia (VD: tiếng quạt quay, tiếng gió...)", done: false },
+            { count: 2, label: "Nhận diện 2 mùi hương thoang thoảng quanh mình", done: false },
+            { count: 1, label: "Đặt tay lên ngực và nói 1 điều dịu dàng với chính mình", done: false }
+        ];
+
+        function renderSensesList() {
+            const container = document.getElementById('senses-list');
+            container.innerHTML = '';
+            sensesData.forEach((item, idx) => {
+                const row = document.createElement('button');
+                row.onclick = () => toggleSenseItem(idx);
+                row.className = `w-full p-2.5 rounded-xl border text-left flex items-center gap-3 transition ${
+                    item.done 
+                    ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-400 text-emerald-900 dark:text-emerald-200 line-through opacity-80' 
+                    : 'bg-slate-50 dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:bg-healing-50/50'
+                }`;
+                row.innerHTML = `
+                    <span class="w-6 h-6 rounded-lg font-extrabold text-xs flex items-center justify-center shrink-0 ${
+                        item.done ? 'bg-emerald-600 text-white' : 'bg-indigo-100 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300'
+                    }">${item.done ? '✓' : item.count}</span>
+                    <span class="text-xs font-medium">${item.label}</span>
+                `;
+                container.appendChild(row);
+            });
+
+            const allDone = sensesData.every(s => s.done);
+            const banner = document.getElementById('senses-complete-banner');
+            if (allDone) banner.classList.remove('hidden');
+            else banner.classList.add('hidden');
+        }
+
+        function toggleSenseItem(idx) {
+            sensesData[idx].done = !sensesData[idx].done;
+            renderSensesList();
+        }
+
+        function resetSenses() {
+            sensesData.forEach(s => s.done = false);
+            renderSensesList();
+        }
+
+        // --- PHÂN HỆ 2: TRẠM LẮNG NGHE & BỘ LỌC ZERO-ADVICE / PII / TỪ KHÓA ĐỎ ---
+        let chatHistory = [];
+
+        function initChatMessages() {
+            chatHistory = [
+                {
+                    sender: 'system',
+                    text: 'Phiên lắng nghe ẩn danh đã kết nối. Giao thức Zero-Advice (Carl Rogers) đang bật: Không phán xét • Không giảng đạo lý • Tự hủy sau 30 phút.'
+                },
+                {
+                    sender: 'listener',
+                    text: 'Chào bạn 🌿 Mình là Người Lắng Nghe ở Trạm Tâm An. Hôm nay bạn không cần phải gồng mình mạnh mẽ đâu, bất cứ điều gì đang làm bạn nặng lòng, mình vẫn đang ở đây nghe bạn kể.'
+                }
+            ];
+            renderChatMessages();
+        }
+
+        function renderChatMessages() {
+            const box = document.getElementById('chat-messages');
+            box.innerHTML = '';
+
+            chatHistory.forEach(msg => {
+                if (msg.sender === 'system') {
+                    const sysDiv = document.createElement('div');
+                    sysDiv.className = "text-center my-2";
+                    sysDiv.innerHTML = `<span class="inline-block px-3 py-1 rounded-full bg-slate-200/70 dark:bg-slate-700 text-[11px] text-slate-600 dark:text-slate-300 font-medium">${msg.text}</span>`;
+                    box.appendChild(sysDiv);
+                } else if (msg.sender === 'student') {
+                    const wrap = document.createElement('div');
+                    wrap.className = "flex flex-col items-end";
+                    wrap.innerHTML = `
+                        <span class="text-[10px] text-slate-400 mb-1 px-1">Học sinh ẩn danh</span>
+                        <div class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-tr-none bg-healing-600 text-white text-xs sm:text-sm leading-relaxed shadow-sm">
+                            ${msg.text}
+                        </div>
+                    `;
+                    box.appendChild(wrap);
+                } else {
+                    const wrap = document.createElement('div');
+                    wrap.className = "flex flex-col items-start";
+                    wrap.innerHTML = `
+                        <span class="text-[10px] text-slate-400 mb-1 px-1">Người Lắng Nghe #409 (Zero-Advice)</span>
+                        <div class="max-w-[80%] px-4 py-2.5 rounded-2xl rounded-tl-none bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 text-slate-800 dark:text-slate-100 text-xs sm:text-sm leading-relaxed shadow-sm">
+                            ${msg.text}
+                        </div>
+                    `;
+                    box.appendChild(wrap);
+                }
+            });
+
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function setChatRole(role) {
+            currentChatRole = role;
+            const btnStudent = document.getElementById('role-btn-student');
+            const btnListener = document.getElementById('role-btn-listener');
+            const indicator = document.getElementById('current-role-indicator');
+            const input = document.getElementById('chat-input');
+
+            closeZeroAdviceWarning();
+
+            if (role === 'student') {
+                btnStudent.className = "flex-1 md:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-emerald-500 text-slate-950 shadow";
+                btnListener.className = "flex-1 md:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white";
+                indicator.textContent = "Đang nhập vai: Học Sinh Tâm Sự";
+                input.placeholder = "Nhập tâm sự của Học sinh (Thử nhập SĐT hoặc từ khóa nhạy cảm để test)...";
+            } else {
+                btnListener.className = "flex-1 md:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold transition-all bg-amber-400 text-slate-950 shadow";
+                btnStudent.className = "flex-1 md:flex-initial px-3.5 py-2 rounded-xl text-xs font-bold transition-all text-slate-300 hover:text-white";
+                indicator.textContent = "Đang nhập vai: Người Lắng Nghe (Bật bộ lọc Zero-Advice)";
+                input.placeholder = "Nhập phản hồi của Người Lắng Nghe (Thử gõ 'Em nên...', 'Có gì đâu mà buồn' để test)...";
+            }
+        }
+
+        // Bộ lọc chặn thông tin cá nhân (PII Blocker: Số điện thoại, email, link MXH)
+        function sanitizePII(text) {
+            let modified = false;
+            // Chặn số điện thoại 9-11 chữ số
+            const phoneRegex = /(\+84|0)[0-9\s\.\-]{8,12}/g;
+            // Chặn link web/mạng xã hội
+            const urlRegex = /(https?:\/\/[^\s]+|fb\.com\/[^\s]+|facebook\.com\/[^\s]+|zalo\.me\/[^\s]+|@[a-zA-Z0-9_\.]+)/gi;
+
+            let cleaned = text.replace(phoneRegex, () => {
+                modified = true;
+                return '<span class="px-1.5 py-0.5 rounded bg-amber-200 dark:bg-amber-900 text-amber-950 dark:text-amber-200 font-bold text-xs">[🔒 Đã ẩn SĐT để bảo vệ bạn]</span>';
+            });
+
+            cleaned = cleaned.replace(urlRegex, () => {
+                modified = true;
+                return '<span class="px-1.5 py-0.5 rounded bg-amber-200 dark:bg-amber-900 text-amber-950 dark:text-amber-200 font-bold text-xs">[🔒 Đã ẩn địa chỉ liên hệ cá nhân]</span>';
+            });
+
+            return { cleaned, modified };
+        }
+
+        // Bộ lọc phát hiện Từ khóa Đỏ / Ẩn dụ tự hại
+        const crisisKeywords = [
+            "tự tử", "tự sát", "muốn chết", "không muốn sống", "đăng xuất khỏi trái đất",
+            "biến mất mãi mãi", "ngủ một giấc không dậy", "rạch tay", "nhảy lầu", "kết thúc tất cả"
+        ];
+
+        function checkCrisisKeywords(text) {
+            const lower = text.toLowerCase();
+            for (const kw of crisisKeywords) {
+                if (lower.includes(kw)) return kw;
+            }
+            return null;
+        }
+
+        // Bộ lọc kiểm duyệt Giao thức Zero-Advice (Khi ở góc nhìn Người Lắng Nghe)
+        const toxicAdvicePatterns = [
+            { pattern: "em nên", reason: "Cụm từ 'Em nên...' mang tính chỉ đạo, đặt Người Lắng Nghe ở vị trí bề trên khuyên bảo." },
+            { pattern: "bạn nên", reason: "Cụm từ 'Bạn nên...' vô tình đưa ra lời khuyên trực tiếp khi học sinh chỉ đang cần giải tỏa cảm xúc." },
+            { pattern: "phải cố", reason: "Cụm từ 'Phải cố lên' tạo thêm áp lực tích cực độc hại (Toxic Positivity) lên một học sinh vốn đã kiệt sức." },
+            { pattern: "có gì đâu mà buồn", reason: "Câu nói này phủ nhận và xem nhẹ nỗi đau (Invalidation) của học sinh." },
+            { pattern: "chuyện nhỏ", reason: "Với người lớn có thể là chuyện nhỏ, nhưng với thế giới của học sinh đó là khủng hoảng thực sự." },
+            { pattern: "nghĩ tích cực lên", reason: "Ép buộc suy nghĩ tích cực ngay lúc đang tổn thương sẽ làm học sinh cảm thấy cô đơn hơn." },
+            { pattern: "vì bố mẹ", reason: "Đưa trách nhiệm 'vì bố mẹ' vào lúc này dễ kích hoạt cảm giác tội lỗi nặng nề." }
+        ];
+
+        let lastSuggestedEmpathy = "";
+
+        function checkZeroAdviceViolation(text) {
+            const lower = text.toLowerCase();
+            for (const item of toxicAdvicePatterns) {
+                if (lower.includes(item.pattern)) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        function handleChatSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const rawText = input.value.trim();
+            if (!rawText) return;
+
+            // 1. Nếu đang ở góc nhìn Người Lắng Nghe -> Kiểm tra vi phạm Zero-Advice trước
+            if (currentChatRole === 'listener') {
+                const violation = checkZeroAdviceViolation(rawText);
+                if (violation) {
+                    showZeroAdviceWarning(violation.reason);
+                    return; // Chặn không cho gửi tin nhắn độc hại
+                }
+            }
+
+            closeZeroAdviceWarning();
+
+            // 2. Kiểm tra PII Blocker (Chặn SĐT / Link MXH)
+            const { cleaned, modified } = sanitizePII(rawText);
+
+            // Đẩy tin nhắn vào phòng chat
+            chatHistory.push({
+                sender: currentChatRole,
+                text: cleaned
+            });
+            input.value = '';
+            renderChatMessages();
+
+            if (modified) {
+                chatHistory.push({
+                    sender: 'system',
+                    text: '🛡️ PII Blocker: Hệ thống đã tự động ẩn thông tin liên lạc cá nhân để ngăn ngừa rủi ro thao túng tâm lý (Grooming).'
+                });
+                renderChatMessages();
+            }
+
+            // 3. Kiểm tra Từ khóa Đỏ / Từ lóng nguy hiểm
+            const crisisWord = checkCrisisKeywords(rawText);
+            if (crisisWord) {
+                document.getElementById('detected-crisis-word').textContent = `"${crisisWord}"`;
+                document.getElementById('crisis-modal').classList.remove('hidden');
+                return;
+            }
+
+            // 4. Nếu Học sinh vừa nhắn -> Giả lập Người Lắng Nghe phản hồi chuẩn Carl Rogers sau 1s
+            if (currentChatRole === 'student') {
+                setTimeout(() => {
+                    const reply = generateRogersResponse(rawText);
+                    chatHistory.push({
+                        sender: 'listener',
+                        text: reply
+                    });
+                    renderChatMessages();
+                }, 950);
+            }
+        }
+
+        // Thuật toán phản hồi chuẩn Carl Rogers (Công nhận cảm xúc + Không khuyên + Tránh bẫy đồng lõa bạo lực)
+        function generateRogersResponse(studentText) {
+            const lower = studentText.toLowerCase();
+
+            // Kiểm tra bẫy "Đồng lõa cảm xúc" (Co-rumination / Đòi trả đũa bạn bè)
+            if (lower.includes("trả thù") || lower.includes("cô lập lại") || lower.includes("đánh nó") || lower.includes("bóc phốt")) {
+                return "Mình nghe thấy sự tức giận và ấm ức rất lớn trong lòng bạn lúc này khi bị đối xử bất công như vậy. Cảm giác uất ức đó hoàn toàn dễ hiểu, tụi mình cùng hít thở một nhịp và giữ cho bạn thật an toàn trước khi làm bất cứ điều gì gây bất lợi cho chính bạn nhé.";
+            }
+
+            if (lower.includes("điểm") || lower.includes("thi") || lower.includes("học") || lower.includes("kém")) {
+                return "Nghe bạn trải lòng, mình cảm nhận được bạn đã phải tự gồng gánh áp lực điểm số này rất nhiều. Cảm giác cố gắng mãi mà vẫn sợ làm mọi người thất vọng thật sự rất kiệt sức. Cứ xả hết nỗi mệt mỏi đó ở đây nhé, mình vẫn đang nghe bạn.";
+            }
+
+            if (lower.includes("bố mẹ") || lower.includes("gia đình") || lower.includes("so sánh") || lower.includes("mắng")) {
+                return "Phải nghe những lời so sánh hay trách móc từ chính người thân trong gia đình chắc hẳn làm bạn thấy cô đơn và tủi thân lắm. Bạn đã rất kiên cường khi giữ những cảm xúc đó đến tận hôm nay.";
+            }
+
+            if (lower.includes("bạn bè") || lower.includes("cô lập") || lower.includes("bơ") || lower.includes("cô đơn")) {
+                return "Đến lớp mỗi ngày mà cảm thấy lạc lõng giữa đám đông thực sự là một cảm giác rất nặng nề. Dù ngoài kia có thế nào, ngay lúc này trong phòng chat này bạn không hề một mình đâu.";
+            }
+
+            return "Mình nghe đây. Từng lời bạn viết ra đều cho thấy bạn đã phải chịu đựng rất nhiều cảm xúc dồn nén. Bạn không cần phải vội vàng tìm cách giải quyết ngay đâu, cứ nói tiếp những gì đang ở trong lòng bạn nhé.";
+        }
+
+        function showZeroAdviceWarning(reason) {
+            const box = document.getElementById('zero-advice-warning');
+            document.getElementById('zero-advice-reason').textContent = reason;
+            lastSuggestedEmpathy = "Nghe bạn kể mình cảm nhận được bạn đã phải chịu đựng áp lực này suốt một thời gian dài. Bạn không cần phải ép mình mạnh mẽ ngay lúc này đâu, mình vẫn đang ở đây nghe bạn.";
+            document.getElementById('zero-advice-suggestion').textContent = `"${lastSuggestedEmpathy}"`;
+            box.classList.remove('hidden');
+        }
+
+        function closeZeroAdviceWarning() {
+            document.getElementById('zero-advice-warning').classList.add('hidden');
+        }
+
+        function applySuggestedEmpathy() {
+            document.getElementById('chat-input').value = lastSuggestedEmpathy;
+            closeZeroAdviceWarning();
+            document.getElementById('chat-input').focus();
+        }
+
+        function insertHint(text) {
+            setChatRole('listener');
+            const input = document.getElementById('chat-input');
+            input.value = text;
+            input.focus();
+        }
+
+        // Chạy kịch bản Demo 1-Click
+        function runDemoScenario(type) {
+            const input = document.getElementById('chat-input');
+            if (type === 'toxic_advice') {
+                setChatRole('listener');
+                input.value = "Có gì đâu mà buồn, chuyện nhỏ mà, em nên cố gắng học vì bố mẹ đi!";
+                handleChatSubmit(new Event('submit'));
+            } else if (type === 'pii_leak') {
+                setChatRole('student');
+                input.value = "Bạn kết bạn Zalo số 0912345678 hoặc vào fb.com/hocsinhbuon tâm sự riêng với mình nhé!";
+                handleChatSubmit(new Event('submit'));
+            } else if (type === 'crisis_slang') {
+                setChatRole('student');
+                input.value = "Bài kiểm tra toán hôm nay tệ quá, bố mẹ biết chắc mắng chết, mình chỉ muốn đăng xuất khỏi trái đất luôn cho xong...";
+                handleChatSubmit(new Event('submit'));
+            } else if (type === 'corumination') {
+                setChatRole('student');
+                input.value = "Mình ghét đứa bạn cùng bàn lắm, ngày mai mình sẽ rủ cả nhóm cô lập lại và bóc phốt nó cho bõ tức!";
+                handleChatSubmit(new Event('submit'));
+            }
+        }
+
+        // Xử lý Hộp thoại Xác nhận Tinh tế khi phát hiện Từ khóa Đỏ
+        function resolveCrisisModal(choice) {
+            document.getElementById('crisis-modal').classList.add('hidden');
+            if (choice === 'slang') {
+                chatHistory.push({
+                    sender: 'system',
+                    text: '✅ Đã xác nhận an toàn (Từ lóng xả stress). Không kích hoạt báo động giả.'
+                });
+                chatHistory.push({
+                    sender: 'listener',
+                    text: 'Cảm ơn bạn đã xác nhận để mình yên tâm nhé 🌿 Mình hiểu cảm giác áp lực đến mức chỉ muốn "bốc hơi" tạm thời đó. Cứ xả hết cơn bực dọc về bài kiểm tra hôm nay ra đây với mình nha!'
+                });
+                renderChatMessages();
+            } else {
+                chatHistory.push({
+                    sender: 'system',
+                    text: '🆘 KÍCH HOẠT MỨC ĐỎ: Phiên chat đã được chuyển giao êm ái sang Chuyên gia Tâm lý Học đường trực chiến.'
+                });
+                chatHistory.push({
+                    sender: 'listener',
+                    text: 'Chào em, cô/thầy là Chuyên viên Tâm lý Học đường trực chiến đây. Em đã rất dũng cảm khi cho tụi mình biết em đang gặp nguy hiểm. Cô/thầy đang ở đây cùng em, giữ an toàn tuyệt đối cho em trước tiên.'
+                });
+                renderChatMessages();
+                openSOSModal();
+            }
+        }
+
+        // Tương tác phi ngôn từ (Gửi Cái Ôm / Đom Đóm / Tách Trà)
+        function sendNonVerbal(type) {
+            const map = {
+                hug: { emoji: '🫂', msg: 'đã gửi một Cái Ôm Ấm Áp (Không lời nói nào cần thiết lúc này)' },
+                firefly: { emoji: '✨', msg: 'đã thắp một Đom Đóm Hy Vọng trong phòng chat' },
+                tea: { emoji: '🍵', msg: 'đã đặt một Tách Trà Ấm bên cạnh bạn' }
+            };
+            const item = map[type];
+            spawnFloatingParticles(item.emoji);
+
+            chatHistory.push({
+                sender: 'system',
+                text: `${item.emoji} ${currentChatRole === 'student' ? 'Học sinh' : 'Người Lắng Nghe'} ${item.msg}`
+            });
+            renderChatMessages();
+        }
+
+        function spawnFloatingParticles(emoji) {
+            const container = document.getElementById('particle-container');
+            for (let i = 0; i < 6; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-particle text-2xl sm:text-3xl';
+                el.textContent = emoji;
+                el.style.left = (25 + Math.random() * 50) + 'vw';
+                el.style.bottom = (15 + Math.random() * 15) + 'vh';
+                el.style.animationDelay = (i * 0.12) + 's';
+                container.appendChild(el);
+                setTimeout(() => el.remove(), 3500);
+            }
+        }
+
+        function triggerSafeHandover() {
+            chatHistory.push({
+                sender: 'system',
+                text: '🔄 Chuyển giao an toàn (Safe Handover): Tình nguyện viên #409 đã bàn giao phiên lắng nghe sang Chuyên viên/AI Đồng hành để đảm bảo chất lượng thấu cảm tốt nhất cho bạn.'
+            });
+            renderChatMessages();
+        }
+
+        function changeChatTopic(topic) {
+            chatHistory.push({
+                sender: 'system',
+                text: `📌 Chủ đề tâm sự đã chuyển sang: "${topic}"`
+            });
+            renderChatMessages();
+        }
+
+        // Bộ đếm ngược 30 phút (Tránh lệ thuộc cảm xúc)
+        function startSessionCountdown() {
+            let totalSeconds = 29 * 60 + 45;
+            const el = document.getElementById('session-countdown');
+            setInterval(() => {
+                if (totalSeconds > 0) totalSeconds--;
+                const m = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+                const s = String(totalSeconds % 60).padStart(2, '0');
+                el.textContent = `${m}:${s}`;
+            }, 1000);
+        }
+
+        // Hạ cánh an toàn (Cool-down Exit)
+        const selfCareCards = [
+            "Hãy đứng dậy uống một ngụm nước ấm, vươn vai thật sâu và nhìn ra khoảng cây xanh ngoài cửa sổ trong 30 giây nhé.",
+            "Hôm nay bạn đã đi qua một ngày rất dài rồi. Tối nay hãy cho phép mình đi ngủ sớm hơn 15 phút mà không tự trách bản thân nhé.",
+            "Hãy rửa mặt bằng nước mát và nghe một bản nhạc không lời dịu nhẹ. Mọi chuyện chưa giải quyết xong hôm nay có thể để ngày mai tính tiếp.",
+            "Đặt bàn tay lên ngực trái, cảm nhận nhịp đập của tim và thầm cảm ơn cơ thể vì đã luôn kiên trì cùng bạn."
+        ];
+
+        function triggerCoolDownExit() {
+            randomizeSelfCareCard();
+            document.getElementById('cooldown-modal').classList.remove('hidden');
+        }
+
+        function randomizeSelfCareCard() {
+            const idx = Math.floor(Math.random() * selfCareCards.length);
+            document.getElementById('selfcare-card-text').textContent = `"${selfCareCards[idx]}"`;
+        }
+
+        function closeCoolDownModal() {
+            document.getElementById('cooldown-modal').classList.add('hidden');
+            initChatMessages();
+        }
+
+        // --- PHÂN HỆ 3: CBT BÓC TÁCH BẪY SUY NGHĨ & TÌNH HUỐNG TƯƠNG TÁC ---
+        const cbtPresets = [
+            {
+                thought: '"Điểm thi giữa kỳ thấp thế này là mình vô dụng, hỏng cả tương lai rồi!"',
+                trap: "Tư duy Trắng - Đen & Bi kịch hóa (Catastrophizing)",
+                explain: "Não bộ đang đánh đồng 1 bài kiểm tra chưa tốt với toàn bộ con người và tương lai của bạn. Thực tế, một điểm số chỉ phản ánh mức độ ôn tập của tuần vừa rồi, không định nghĩa giá trị của bạn.",
+                reframe: '"Mình buồn vì kết quả lần này chưa như ý, nhưng đây chỉ là 1 cột điểm. Mình vẫn có những môn khác và thời gian để điều chỉnh cách học từ từ."'
+            },
+            {
+                thought: '"Nhóm bạn đi ăn không rủ mình, chắc chắn cả lớp đều ghét và coi thường mình."',
+                trap: "Đọc suy nghĩ (Mind Reading) & Khái quát hóa quá mức",
+                explain: "Khi bị tổn thương, tụi mình dễ tự đoán suy nghĩ tiêu cực của người khác rồi kết luận 'cả lớp đều ghét'. Có thể đó là một cuộc hẹn phát sinh tình cờ hoặc sự vô tâm nhất thời chứ không phải âm mưu tẩy chay.",
+                reframe: '"Mình thấy chạnh lòng khi không được rủ hôm nay. Nhưng mình sẽ hỏi chuyện tự nhiên với người bạn mình tin tưởng nhất trước khi tự kết luận rằng ai cũng ghét mình."'
+            },
+            {
+                thought: '"Bố mẹ suốt ngày khen con nhà người ta, mình chẳng có giá trị gì trong nhà này cả."',
+                trap: "Dán nhãn bản thân (Labeling) & Cá nhân hóa",
+                explain: "Thói quen so sánh là hạn chế trong cách giao tiếp của nhiều phụ huynh Á Đông, chứ không phải là thước đo giá trị thật của bạn.",
+                reframe: '"Cách bố mẹ so sánh làm mình rất tổn thương, nhưng điều đó chỉ phản ánh sự lo lắng vụng về của bố mẹ chứ không có nghĩa là mình kém cỏi."'
+            },
+            {
+                thought: '"Mình không biết đam mê của mình là gì trong khi bạn bè đã có mục tiêu hết, mình thật kém cỏi."',
+                trap: "So sánh khập khiễng & Áp lực 'Phải biết tất cả ở tuổi 17'",
+                explain: "Ở tuổi 15-18, việc đang thử và sai để tìm bản sắc cá nhân (Identity Exploration) là hoàn toàn bình thường. Rất nhiều người tưởng là đã có mục tiêu nhưng lên đại học vẫn thay đổi.",
+                reframe: '"Mình chưa tìm ra một đam mê duy nhất lúc này không sao cả. Mình có thể bắt đầu từ việc tìm hiểu những môn học mình ít chán nhất."'
+            }
+        ];
+
+        function selectCBTPreset(index) {
+            const item = cbtPresets[parseInt(index, 10)];
+            document.getElementById('cbt-custom-input').value = item.thought;
+            document.getElementById('cbt-trap-name').textContent = item.trap;
+            document.getElementById('cbt-trap-explain').textContent = item.explain;
+            document.getElementById('cbt-reframe-text').textContent = item.reframe;
+        }
+
+        function analyzeCustomCBT() {
+            const text = document.getElementById('cbt-custom-input').value.trim();
+            if (!text) return;
+            const lower = text.toLowerCase();
+
+            let trap = "Khái quát hóa quá mức & Tự chỉ trích khắt khe";
+            let explain = "Suy nghĩ này đang dùng những từ ngữ tuyệt đối hóa để phán xét bản thân bạn trong lúc bạn đang mệt mỏi nhất.";
+            let reframe = `"Cảm giác buồn và áp lực lúc này của mình là có thật, nhưng một khó khăn trước mắt không lấy đi toàn bộ nỗ lực và giá trị của mình."`;
+
+            if (lower.includes("luôn luôn") || lower.includes("không bao giờ") || lower.includes("vô dụng") || lower.includes("hỏng hết")) {
+                trap = "Tư duy Trắng - Đen (All-or-Nothing Thinking)";
+                explain = "Não bộ đang nhìn mọi thứ theo hai thái cực: Hoặc là hoàn hảo 100%, hoặc là thất bại hoàn toàn, bỏ qua những điểm sáng ở khoảng giữa.";
+                reframe = `"Dù chuyện này chưa diễn ra như ý muốn, mình vẫn đang học được cách đối diện từng chút một mà không cần phải hoàn hảo ngay lập tức."`;
+            } else if (lower.includes("chắc chắn họ") || lower.includes("ai cũng nghĩ") || lower.includes("ghét mình")) {
+                trap = "Đọc suy nghĩ người khác (Mind Reading)";
+                explain = "Bạn đang tự giả định người khác nghĩ xấu về mình mà chưa có bằng chứng xác thực, làm nỗi lo âu tăng gấp đôi.";
+                reframe = `"Mình không thể kiểm soát hay đoán chắc 100% suy nghĩ của người khác, mình chỉ cần tập trung vào sự tử tế và bình an của chính mình."`;
+            }
+
+            document.getElementById('cbt-trap-name').textContent = trap;
+            document.getElementById('cbt-trap-explain').textContent = explain;
+            document.getElementById('cbt-reframe-text').textContent = reframe;
+        }
+
+        // Dữ liệu Tình huống tương tác (Visual Novel)
+        const storiesData = [
+            {
+                badge: "Áp lực đồng trang lứa (12-16 tuổi)",
+                title: "Bị nhóm bạn thân 'bơ đẹp' trên lớp",
+                context: "Sáng thứ Hai vào lớp, bạn thấy 3 người bạn thân trong nhóm đang xúm lại xem điện thoại và cười nói rôm rả. Khi bạn vừa bước tới hỏi 'Có chuyện gì vui thế?', cả nhóm bỗng im bặt và tản ra. Cảm giác hẫng hụt dâng lên nghẹn ở cổ. Bạn sẽ chọn phản ứng nào?",
+                choices: [
+                    {
+                        label: "A. Lập tức lên mạng đăng story bóng gió trách móc hoặc lập nhóm nói xấu lại",
+                        analysis: "Góc nhìn tâm lý: Phản ứng này giúp xả cơn giận tức thời nhưng dễ kích hoạt hiệu ứng leo thang xung đột (Escalation). Nếu nhóm bạn chỉ đang giữ bí mật sinh nhật bất ngờ hoặc có hiểu lầm nhỏ, story bóng gió sẽ biến hiểu lầm thành rạn nứt thật."
+                    },
+                    {
+                        label: "B. Im lặng chịu đựng, tự thu mình lại và nghĩ 'Chắc mình có lỗi gì nên ai cũng ghét'",
+                        analysis: "Góc nhìn tâm lý: Đây là cơ chế 'Nội tâm hóa nỗi đau' (Internalizing). Bạn tránh được cãi vã trước mắt nhưng lại tự làm tổn thương lòng tự trọng của mình và để nỗi ấm ức âm ỉ kéo dài."
+                    },
+                    {
+                        label: "C. Hít thở sâu, đợi giờ ra chơi nhắn riêng cho 1 bạn lành tính nhất trong nhóm bằng thông điệp 'Mình' (I-Message)",
+                        analysis: "Góc nhìn tâm lý (Khuyên dùng): Sử dụng I-Message ('Sáng nay lúc mọi người im lặng mình hơi chạnh lòng, không biết tụi mình có hiểu lầm gì không?') giúp bạn giữ được sự tự trọng, không buộc tội ai nhưng vẫn mở ra cơ hội tháo gỡ rõ ràng."
+                    }
+                ]
+            },
+            {
+                badge: "Xung đột gia đình (13-18 tuổi)",
+                title: "Bữa cơm tối và câu nói 'Nhìn con nhà người ta kìa'",
+                context: "Trong bữa cơm tối, bố mẹ vừa nghe tin con bác hàng xóm đạt giải Học sinh giỏi liền quay sang nhìn bạn thở dài: 'Bằng tuổi nó mà suốt ngày thấy mày đóng cửa trong phòng, chẳng biết sau này làm nên trò trống gì'. Bạn cảm thấy miếng cơm nghẹn đắng.",
+                choices: [
+                    {
+                        label: "A. Buông đũa đứng phắt dậy: 'Vậy bố mẹ đi mà nhận nó làm con!' rồi đóng sầm cửa phòng",
+                        analysis: "Góc nhìn tâm lý: Khi hệ viền cảm xúc bị kích động, phản ứng chiến đấu (Fight) rất dễ bật ra. Tuy nhiên, tiếng đóng cửa sầm sẽ khiến bố mẹ chuyển từ 'lo lắng' sang 'tức giận vì con hỗn', làm cuộc nói chuyện đi vào ngõ cụt."
+                    },
+                    {
+                        label: "B. Đợi sau bữa cơm, viết một mảnh giấy hoặc tin nhắn gửi mẹ: 'Khi bố mẹ so sánh con, con thấy rất buồn và áp lực, con cũng đang cố gắng theo tốc độ của con'",
+                        analysis: "Góc nhìn tâm lý (Khuyên dùng): Viết ra giấy hoặc tin nhắn giúp tránh được xung đột giọng điệu trực diện. Phụ huynh thường dễ lắng nghe và suy ngẫm hơn khi đọc được cảm xúc thật của con trong lúc đã nguôi giận."
+                    }
+                ]
+            },
+            {
+                badge: "Khủng hoảng bản sắc (15-18 tuổi)",
+                title: "Khi ước mơ của bạn ngược chiều với mong muốn của gia đình",
+                context: "Bạn rất yêu thích Thiết kế đồ họa / Tâm lý học, nhưng bố mẹ kiên quyết bắt bạn phải thi Kinh tế hoặc Y dược vì 'cho ổn định'. Mỗi lần nhắc đến việc chọn nguyện vọng là không khí gia đình lại căng như dây đàn.",
+                choices: [
+                    {
+                        label: "A. Nhắm mắt làm theo ý bố mẹ cho êm chuyện, dù biết mình sẽ chán nản suốt 4 năm đại học",
+                        analysis: "Góc nhìn tâm lý: Theo Erikson, đây là trạng thái 'Bản sắc nhận sẵn' (Foreclosure) — sống cuộc đời của người khác để đổi lấy sự an toàn ngắn hạn, nhưng dễ dẫn đến khủng hoảng mất phương hướng ở tuổi 20."
+                    },
+                    {
+                        label: "B. Chuẩn bị một bản kế hoạch nhỏ (cơ hội việc làm, học phí, lộ trình tự lập) và nhờ Chuyên viên hướng nghiệp của trường cùng trò chuyện với bố mẹ",
+                        analysis: "Góc nhìn tâm lý (Khuyên dùng): Nỗi sợ lớn nhất của bố mẹ là sợ con khổ và bấp bênh. Khi bạn chứng minh sự nghiêm túc bằng thông tin thực tế và có tiếng nói khách quan từ thầy cô tư vấn, bố mẹ sẽ dần chuyển từ kiểm soát sang tôn trọng quyền tự quyết của bạn."
+                    }
+                ]
+            }
+        ];
+
+        function loadStory(idx) {
+            const story = storiesData[idx];
+            [0, 1, 2].forEach(i => {
+                const btn = document.getElementById('story-tab-' + i);
+                if (i === idx) {
+                    btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white";
+                } else {
+                    btn.className = "px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300";
+                }
+            });
+
+            document.getElementById('story-badge').textContent = story.badge;
+            document.getElementById('story-title').textContent = story.title;
+            document.getElementById('story-context').textContent = story.context;
+
+            const choicesContainer = document.getElementById('story-choices');
+            choicesContainer.innerHTML = '';
+
+            story.choices.forEach((c, cIdx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left p-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-indigo-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 text-xs sm:text-sm font-medium transition";
+                btn.textContent = c.label;
+                btn.onclick = () => {
+                    document.getElementById('story-feedback-text').textContent = c.analysis;
+                };
+                choicesContainer.appendChild(btn);
+            });
+
+            document.getElementById('story-feedback-text').textContent = "Hãy bấm vào một trong các lựa chọn bên trên để xem phân tích tâm lý đằng sau mỗi hành động.";
+        }
+
+        // --- CHẾ ĐỘ TRỰC ĐÊM (NIGHT OWL MODE SAU 22H) & ÂM THANH TRẮNG (WEB AUDIO API) ---
+        function toggleNightOwlMode() {
+            isNightOwl = !isNightOwl;
+            const html = document.documentElement;
+            const banner = document.getElementById('night-owl-banner');
+            const text = document.getElementById('night-owl-text');
+            const partnerName = document.getElementById('chat-partner-name');
+
+            if (isNightOwl) {
+                html.classList.add('dark');
+                banner.classList.remove('hidden');
+                text.textContent = "Trực Đêm (Sau 22h)";
+                partnerName.textContent = "AI Cú Đêm Đồng Hành (22h - 6h sáng)";
+            } else {
+                html.classList.remove('dark');
+                banner.classList.add('hidden');
+                text.textContent = "Ban ngày";
+                partnerName.textContent = "Người Lạ Ấm Áp #409";
+                if (isWhiteNoisePlaying) toggleWhiteNoise();
+            }
+        }
+
+        // Tạo âm thanh tiếng mưa rơi dịu nhẹ bằng Web Audio API (Không cần file ngoài)
+        function toggleWhiteNoise() {
+            const label = document.getElementById('white-noise-label');
+            if (!isWhiteNoisePlaying) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                whiteNoiseAudioCtx = new AudioContext();
+                const bufferSize = 2 * whiteNoiseAudioCtx.sampleRate;
+                const noiseBuffer = whiteNoiseAudioCtx.createBuffer(1, bufferSize, whiteNoiseAudioCtx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                let lastOut = 0.0;
+                for (let i = 0; i < bufferSize; i++) {
+                    const white = Math.random() * 2 - 1;
+                    output[i] = (lastOut + (0.02 * white)) / 1.02;
+                    lastOut = output[i];
+                    output[i] *= 0.15; // Âm lượng dịu nhẹ
+                }
+                whiteNoiseNode = whiteNoiseAudioCtx.createBufferSource();
+                whiteNoiseNode.buffer = noiseBuffer;
+                whiteNoiseNode.loop = true;
+                whiteNoiseNode.connect(whiteNoiseAudioCtx.destination);
+                whiteNoiseNode.start(0);
+                isWhiteNoisePlaying = true;
+                label.textContent = "Tắt tiếng mưa rơi";
+            } else {
+                if (whiteNoiseNode) whiteNoiseNode.stop();
+                if (whiteNoiseAudioCtx) whiteNoiseAudioCtx.close();
+                isWhiteNoisePlaying = false;
+                label.textContent = "Bật tiếng mưa rơi";
+            }
+        }
+
+        // --- QUẢN LÝ CÁC MODAL ---
+        function openSOSModal() {
+            document.getElementById('sos-modal').classList.remove('hidden');
+        }
+        function closeSOSModal() {
+            document.getElementById('sos-modal').classList.add('hidden');
+        }
+        function bookSchoolCounselor() {
+            const codeEl = document.getElementById('booking-code-result');
+            const randomNum = Math.floor(100 + Math.random() * 900);
+            codeEl.textContent = `Mã hẹn ẩn danh của bạn: #TAM-AN-${randomNum} (Phòng Tâm lý B.102 - Bảo mật 100%)`;
+            codeEl.classList.remove('hidden');
+        }
+        function openCommitmentModal() {
+            document.getElementById('commitment-modal').classList.remove('hidden');
+        }
+        function closeCommitmentModal() {
+            document.getElementById('commitment-modal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
